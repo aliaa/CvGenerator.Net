@@ -6,19 +6,44 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CvGenerator.Models;
+using CvGenerator.Logic;
+using Microsoft.AspNetCore.Hosting;
+using EasyMongoNet;
+using System.IO;
 
 namespace CvGenerator.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private readonly IWebHostEnvironment env;
+        private readonly IDbContext db;
+        private readonly string templatesPath;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, IDbContext db)
         {
-            _logger = logger;
+            this.logger = logger;
+            this.env = env;
+            this.db = db;
+            this.templatesPath = Path.Combine(env.ContentRootPath, "CvTemplates");
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(CvInformation cv)
+        {
+            string selectedTemplatePath = Path.Combine(templatesPath, "1");
+            HtmlRenderer renderer = new HtmlRenderer(selectedTemplatePath);
+            renderer.FillData(cv);
+            byte[] pdfContent = renderer.ConvertToPdf();
+            return File(pdfContent, "application/pdf", "cv.pdf");
+        }
+
+        public IActionResult About()
         {
             return View();
         }

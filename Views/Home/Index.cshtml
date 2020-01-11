@@ -1,8 +1,31 @@
-﻿@{
+﻿@model CvGenerator.Models.CvInformation
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <form asp-action="Index">
+        <h1 class="display-4 text-center">Build your own CV just in few steps!</h1>
+        <h4 style="margin-top:64px;">1. Enter Your Basic Information:</h4>
+        <div class="form-group">
+            <table class="table" style="margin-top:20px;">
+                <tr>
+                    <td>First Name:</td>
+                    <td><input asp-for="FirstName" class="form-control" /></td>
+                    <td>Last Name: </td>
+                    <td><input asp-for="LastName" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td>Job Title:</td>
+                    <td><input asp-for="JobTitle" class="form-control" /></td>
+                    <td>Email:</td>
+                    <td><input asp-for="Email" class="form-control" /></td>
+                </tr>
+            </table>
+            <div class="text-center">
+                <input type="submit" value="Generate my CV!" class="btn btn-dark" />
+            </div>
+        </div>
+    </form>
 </div>

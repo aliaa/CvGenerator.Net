@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using EasyMongoNet;
+using Newtonsoft.Json.Serialization;
+using System.Linq;
 
 namespace CvGenerator
 {
@@ -22,8 +23,36 @@ namespace CvGenerator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+                AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                });
+
+            services.AddAuthorization(conf =>
+            {
+                conf.AddPolicy("Admin", policy => policy.RequireClaim("IsAdmin"));
+            });
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages()
+                .AddNewtonsoftJson(
+                    options =>
+                    {
+                        options.SerializerSettings.Converters.Add(new ObjectIdJsonConverter());
+                        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                        // Maintain property names during serialization. See:
+                        // https://github.com/aspnet/Announcements/issues/194
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    })
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+
+            // Add mongodb service:
+            var db = new MongoDbContext(Configuration.GetValue<string>("DBName"), Configuration.GetValue<string>("MongoConnString"));
+            services.AddSingleton<IDbContext>(db);
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -37,9 +66,7 @@ namespace CvGenerator
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
