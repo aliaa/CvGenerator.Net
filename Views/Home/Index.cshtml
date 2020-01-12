@@ -5,27 +5,169 @@
 }
 
 <div>
-    <form asp-action="Index">
-        <h1 class="display-4 text-center">Build your own CV just in few steps!</h1>
-        <h4 style="margin-top:64px;">1. Enter Your Basic Information:</h4>
-        <div class="form-group">
-            <table class="table" style="margin-top:20px;">
-                <tr>
-                    <td>First Name:</td>
-                    <td><input asp-for="FirstName" class="form-control" /></td>
-                    <td>Last Name: </td>
-                    <td><input asp-for="LastName" class="form-control" /></td>
-                </tr>
-                <tr>
-                    <td>Job Title:</td>
-                    <td><input asp-for="JobTitle" class="form-control" /></td>
-                    <td>Email:</td>
-                    <td><input asp-for="Email" class="form-control" /></td>
-                </tr>
-            </table>
-            <div class="text-center">
-                <input type="submit" value="Generate my CV!" class="btn btn-dark" />
+    <form asp-action="Index" id="form">
+        <h1 class="display-4 text-center m-5">Build your own CV just in few steps!</h1>
+
+        <h4 class="m-4">1. Enter Your Basic Information:</h4>
+        <div class="m-4">
+            <div class="row">
+                <div class="col-md form-group">
+                    First Name:
+                    <input asp-for="FirstName" class="form-control" required />
+                </div>
+                <div class="col-md form-group">
+                    Last Name:
+                    <input asp-for="LastName" class="form-control" required />
+                </div>
+                <div class="col-md form-group">
+                    Job Title:
+                    <input asp-for="JobTitle" class="form-control" required />
+                </div>
+                <div class="col-md form-group">
+                    Email:
+                    <input asp-for="Email" class="form-control" />
+                </div>
             </div>
+            <div class="row">
+                <div class="col-md form-group">
+                    City/State/Country:
+                    <input asp-for="Address" class="form-control" />
+                </div>
+                <div class="col-md form-group">
+                    Contact Number:
+                    <input asp-for="ContactNumber" class="form-control" />
+                </div>
+                <div class="col-md form-group">
+                    Linkedin Address:
+                    <input asp-for="LinkedinAddress" class="form-control" value="linkedin.com/in/your-name" />
+                </div>
+                <div class="col-md form-group">
+                    Github Address:
+                    <input asp-for="GithubAddress" class="form-control" value="github.com/your-name" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    Protfolio/Personal Website:
+                    <input asp-for="PersonalAddress" class="form-control" />
+                </div>
+                <div class="col-md-9 form-group">
+                    Skills: <small class="text-secondary ml-4">(Separate them by a comma " , ")</small>
+                    <input asp-for="SkillsInAString" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <h4 class="m-4">2. Your Education History:</h4>
+        <div class="m-4">
+            <div class="text-center mb-4">
+                <input class="btn btn-secondary" type="button" id="btnAddEducation" value="Add Education" />
+            </div>
+            <div class="row" id="divEducations">
+                @for (var i = 0; i < Model.Educations.Count; i++)
+                {
+                    @Html.EditorFor(m => Model.Educations[i])
+                }
+            </div>
+        </div>
+
+        <h4 class="m-4">3. Your Employment History:</h4>
+        <div class="m-4">
+            <div class="text-center mb-4">
+                <input class="btn btn-secondary" type="button" id="btnAddEmployment" value="Add Employment" />
+            </div>
+            <div class="row" id="divEmployments">
+                @for (var i = 0; i < Model.Employments.Count; i++)
+                {
+                    @Html.EditorFor(m => Model.Employments[i])
+                }
+            </div>
+        </div>
+
+        <h4 class="m-4">4. Your Language Skills:</h4>
+        <div class="m-4">
+            <div class="text-center mb-4">
+                <input class="btn btn-secondary" type="button" id="btnAddLanguage" value="Add Language" />
+            </div>
+            <div class="row" id="divLanguages">
+                @for (var i = 0; i < Model.Languages.Count; i++)
+                {
+                    @Html.EditorFor(m => Model.Languages[i])
+                }
+            </div>
+        </div>
+
+        <h4 class="m-4">5. Your Projects:</h4>
+        <div class="m-4">
+            <div class="text-center mb-4">
+                <input class="btn btn-secondary" type="button" id="btnAddProject" value="Add Project" />
+            </div>
+            <div class="row" id="divProjects">
+                @for (var i = 0; i < Model.Projects.Count; i++)
+                {
+                    @Html.EditorFor(m => Model.Projects[i])
+                }
+            </div>
+        </div>
+
+        <div class="text-center">
+            <input type="submit" value="Generate My CV!" class="btn btn-primary" />
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#btnAddEducation").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddEducation",
+                success: function (partialView) {
+                    var i = $("#divEducations").children().length;
+                    var item = $.parseHTML(partialView);
+                    item = ConvertInputsToBeAsArrayItem(item, "@nameof(Model.Educations)", i);
+                    $('#divEducations').append(item);
+                }
+            });
+        });
+
+        $("#btnAddEmployment").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddEmployment",
+                success: function (partialView) {
+                    var i = $("#divEmployments").children().length;
+                    var item = $.parseHTML(partialView);
+                    item = ConvertInputsToBeAsArrayItem(item, "@nameof(Model.Employments)", i);
+                    $('#divEmployments').append(item);
+                }
+            });
+        });
+
+        $("#btnAddLanguage").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddLanguageSkill",
+                success: function (partialView) {
+                    var i = $("#divLanguages").children().length;
+                    var item = $.parseHTML(partialView);
+                    item = ConvertInputsToBeAsArrayItem(item, "@nameof(Model.Languages)", i);
+                    $('#divLanguages').append(item);
+                }
+            });
+        });
+
+        $("#btnAddProject").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddProject",
+                success: function (partialView) {
+                    var i = $("#divProjects").children().length;
+                    var item = $.parseHTML(partialView);
+                    item = ConvertInputsToBeAsArrayItem(item, "@nameof(Model.Projects)", i);
+                    $('#divProjects').append(item);
+                }
+            });
+        });
+    </script>
+}

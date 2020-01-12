@@ -30,7 +30,7 @@ namespace CvGenerator.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new CvInformation());
         }
 
         [HttpPost]
@@ -58,5 +58,19 @@ namespace CvGenerator.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        private IActionResult GetEditorTemplatePartialView(string name) => PartialView("EditorTemplates/" + name);
+
+        [HttpPost]
+        public IActionResult AddEducation() => GetEditorTemplatePartialView(nameof(CvEducation));
+
+        [HttpPost]
+        public IActionResult AddEmployment() => GetEditorTemplatePartialView(nameof(CvEmployment));
+
+        [HttpPost]
+        public IActionResult AddLanguageSkill() => GetEditorTemplatePartialView(nameof(CvLanguageSkill));
+
+        [HttpPost]
+        public IActionResult AddProject() => GetEditorTemplatePartialView(nameof(CvProject));
     }
 }
