@@ -1,28 +1,41 @@
-﻿using IronPdf;
+﻿using PuppeteerSharp;
+using PuppeteerSharp.Media;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace CvGenerator.Logic
 {
     public class HtmlToPdfConverter
     {
-        public HtmlToPdf PdfRenderer { get; private set; }
+        private readonly Browser browser;
+        private readonly PdfOptions pdfOptions;
 
         public HtmlToPdfConverter()
         {
-            var options = new PdfPrintOptions
+            Task.Run(() => new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision)).Wait();
+            browser = Task.Run(() => Puppeteer.LaunchAsync(new LaunchOptions { Headless = true })).Result;
+
+            pdfOptions = new PdfOptions 
             {
-                PaperSize = PdfPrintOptions.PdfPaperSize.A4,
-                MarginTop = 15,
-                MarginBottom = 15,
-                MarginLeft = 15,
-                MarginRight = 15
+                Format = PaperFormat.A4,
+                MarginOptions = new MarginOptions 
+                {
+                    Left = "32px",
+                    Right = "32px",
+                    Top = "32px",
+                    Bottom = "32px"
+                },
+                PrintBackground = true
             };
-            this.PdfRenderer = new HtmlToPdf(options);
         }
 
-        public byte[] ConvertToPdf(string html)
+        public async Task<byte[]> ConvertToPdf(string html)
         {
-            var pdf = PdfRenderer.RenderHtmlAsPdf(html);
-            return pdf.BinaryData;
+            using (var page = await browser.NewPageAsync())
+            {
+                await page.SetContentAsync(html);
+                return await page.PdfDataAsync(pdfOptions);
+            }
         }
     }
 }

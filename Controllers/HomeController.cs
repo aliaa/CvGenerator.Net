@@ -9,6 +9,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace CvGenerator.Controllers
 {
@@ -37,11 +38,11 @@ namespace CvGenerator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(CvInformation cv)
+        public async Task<IActionResult> Index(CvInformation cv)
         {
             CleanupEmptyListItems(cv);
             var html = templates.Values.First().Renderer.FillData(cv);
-            byte[] pdfContent = converter.ConvertToPdf(html);
+            byte[] pdfContent = await converter.ConvertToPdf(html);
             return File(pdfContent, "application/pdf", "cv.pdf");
         }
 
