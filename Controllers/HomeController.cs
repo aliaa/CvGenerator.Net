@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CvGenerator.Models;
@@ -10,6 +6,9 @@ using CvGenerator.Logic;
 using Microsoft.AspNetCore.Hosting;
 using EasyMongoNet;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace CvGenerator.Controllers
 {
@@ -18,14 +17,18 @@ namespace CvGenerator.Controllers
         private readonly ILogger<HomeController> logger;
         private readonly IWebHostEnvironment env;
         private readonly IDbContext db;
-        private readonly string templatesPath;
 
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, IDbContext db)
+        private readonly Dictionary<string, Template> templates;
+        private readonly HtmlToPdfConverter converter;
+
+
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, IDbContext db, HtmlToPdfConverter converter, Dictionary<string, Template> templates)
         {
             this.logger = logger;
             this.env = env;
             this.db = db;
-            this.templatesPath = Path.Combine(env.ContentRootPath, "CvTemplates");
+            this.converter = converter;
+            this.templates = templates;
         }
 
         public IActionResult Index()
@@ -36,11 +39,22 @@ namespace CvGenerator.Controllers
         [HttpPost]
         public IActionResult Index(CvInformation cv)
         {
-            string selectedTemplatePath = Path.Combine(templatesPath, "1");
-            HtmlRenderer renderer = new HtmlRenderer(selectedTemplatePath);
-            renderer.FillData(cv);
-            byte[] pdfContent = renderer.ConvertToPdf();
+            CleanupEmptyListItems(cv);
+            var html = templates.Values.First().Renderer.FillData(cv);
+            byte[] pdfContent = converter.ConvertToPdf(html);
             return File(pdfContent, "application/pdf", "cv.pdf");
+        }
+
+        private void CleanupEmptyListItems(CvInformation cv)
+        {
+            foreach (var item in cv.Educations.Where(x => x.StartYear == 0 || x.Title == null).ToList())
+                cv.Educations.Remove(item);
+            foreach (var item in cv.Employments.Where(x => x.StartYear == 0 || x.JobTitle == null).ToList())
+                cv.Employments.Remove(item);
+            foreach (var item in cv.Languages.Where(x => x.Name == null).ToList())
+                cv.Languages.Remove(item);
+            foreach (var item in cv.Projects.Where(x => x.Year == 0 || x.Name == null).ToList())
+                cv.Projects.Remove(item);
         }
 
         public IActionResult About()

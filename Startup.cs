@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using EasyMongoNet;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
+using CvGenerator.Logic;
+using System.IO;
+using System.Collections.Generic;
 
 namespace CvGenerator
 {
@@ -51,6 +54,18 @@ namespace CvGenerator
             // Add mongodb service:
             var db = new MongoDbContext(Configuration.GetValue<string>("DBName"), Configuration.GetValue<string>("MongoConnString"));
             services.AddSingleton<IDbContext>(db);
+
+            services.AddSingleton(new HtmlToPdfConverter());
+
+            var env = services.FirstOrDefault(s => typeof(IWebHostEnvironment).IsEquivalentTo(s.ServiceType));
+            var templatesPath = Path.Combine((env.ImplementationInstance as IWebHostEnvironment).ContentRootPath, "CvTemplates");
+            var templatesCache = new Dictionary<string, Template>();
+            foreach (var folder in Directory.GetDirectories(templatesPath))
+            {
+                var template = new Template(folder);
+                templatesCache.Add(template.Name, template);
+            }
+            services.AddSingleton(templatesCache);
         }
 
 

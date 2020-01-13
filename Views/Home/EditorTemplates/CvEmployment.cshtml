@@ -13,6 +13,12 @@
             <input asp-for="EndYear" class="form-control" />
             <span asp-validation-for="EndYear" class="text-danger"></span>
         </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="StillWorking" onclick="ToggleNearInput($(this), 'EndYear')" />
+                @Html.DisplayNameFor(model => model.StillWorking)
+            </label>
+        </div>
         <div class="form-group">
             <label asp-for="JobTitle" class="control-label"></label>
             <input asp-for="JobTitle" class="form-control" />
@@ -22,11 +28,6 @@
             <label asp-for="Company" class="control-label"></label>
             <input asp-for="Company" class="form-control" />
             <span asp-validation-for="Company" class="text-danger"></span>
-        </div>
-        <div class="form-group form-check">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="StillWorking" /> @Html.DisplayNameFor(model => model.StillWorking)
-            </label>
         </div>
     </div>
 </div>

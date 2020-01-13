@@ -2,8 +2,28 @@
 	<div style="float:left;">
 		<h1>{FirstName} {LastName}</h1>
 		<h3>{JobTitle}</h3>
+
 	</div>
-	<div style="float:right; background-color:#888; color:white; width:300px; padding:16px;">
-		{Email}
+	<div style="float:right;">
+		<div style="background-color:#888; color:white; width:300px; padding:16px;">
+			<p class="Address">{Address}</p>
+			<p>{Email}</p>
+			<p class="ContactNumber">{ContactNumber}</p>
+			<p class="LinkedinAddress">{LinkedinAddress}</p>
+			<p class="GithubAddress">{GithubAddress}</p>
+			<p class="PersonalAddress">{PersonalAddress}</p>
+		</div>
+		<div class="Languages" style="background-color:#888; color:white; width:300px; padding:16px; margin-top:8px;">
+			<h3>Languages</h3>
+			<ul class="Languages">
+				<li class="Item">{*.Name} : {*.Level}</li>
+			</ul>
+		</div>
+		<div class="SkillsInAString" style="background-color:#888; color:white; width:300px; padding:16px; margin-top:8px;">
+			<h3>Skills</h3>
+			<ul class="Skills">
+				<li class="Item">{*}</li>
+			</ul>
+		</div>
 	</div>
 </div>

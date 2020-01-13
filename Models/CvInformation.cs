@@ -17,7 +17,16 @@ namespace CvGenerator.Models
         public string GithubAddress { get; set; }
         public string PersonalAddress { get; set; }
         public string SkillsInAString { get; set; }
-        public IEnumerable<string> Skills => SkillsInAString?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim());
+        public List<string> Skills
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(SkillsInAString))
+                    return null;
+                return SkillsInAString.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+            }
+        }
+        
         public List<CvLanguageSkill> Languages { get; set; } = new List<CvLanguageSkill>();
         public List<CvEmployment> Employments { get; set; } = new List<CvEmployment>();
         public List<CvEducation> Educations { get; set; } = new List<CvEducation>();
