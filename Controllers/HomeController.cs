@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace CvGenerator.Controllers
 {
@@ -42,6 +43,7 @@ namespace CvGenerator.Controllers
         {
             CleanupEmptyListItems(cv);
             var html = templates.Values.First().Renderer.FillData(cv);
+            //return File(Encoding.UTF8.GetBytes(html), "text/html", "cv.html");
             byte[] pdfContent = await converter.ConvertToPdf(html);
             return File(pdfContent, "application/pdf", "cv.pdf");
         }

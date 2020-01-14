@@ -1,29 +1,77 @@
-﻿<div>
-	<div style="float:left;">
-		<h1>{FirstName} {LastName}</h1>
-		<h3>{JobTitle}</h3>
+﻿<html>
+<head>
+</head>
+<body>
+	<div>
+		<div style="float:left;">
+			<h1 style="margin-bottom:0px;">{FirstName} {LastName}</h1>
+			<h3 style="margin-top:0px;">{JobTitle}</h3>
 
+			<div style="display:flex;">
+				<div class="Educations" style="margin:12px;">
+					<h2>Education</h2>
+					<ul class="Educations">
+						<li class="Item" style="margin-bottom:10px;">{*}</li>
+					</ul>
+				</div>
+				<div class="Employments" style="margin:12px;">
+					<h2>Employment</h2>
+					<ul class="Employments">
+						<li class="Item" style="margin-bottom:10px;">{*}</li>
+					</ul>
+				</div>
+			</div>
+			<div style="margin-top:20px;" class="Projects">
+				<h2>Projects/Experiences</h2>
+				<ul class="Projects">
+					<li class="Item" style="margin-bottom:16px;">
+						<b>{*.Year} - {*.Name}:</b> {*.Description}<br/>
+						<div class="*.Role">Role: {*.Role}</div>
+						<div class="*.TechStack">Tech Stack: {*.TechStack}</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div style="float:right;">
+			<div style="background-color:#888; color:white; padding:16px;">
+				<div class="Address" style="display:flex; padding:6px;">
+					<img src="location.png" style="height:20px; margin-right:4px;" />
+					<span>{Address}</span>
+				</div>
+				<div class="Email" style="display:flex; padding:6px;">
+					<img src="email.png" style="height:20px; margin-right:4px;" />
+					<span style="margin-top:2px;">{Email}</span>
+				</div>
+				<div class="ContactNumber" style="display:flex; padding:6px;">
+					<img src="phone.png" style="height:20px; margin-right:4px;" />
+					<span style="margin-top:2px;">{ContactNumber}</span>
+				</div>
+				<div class="LinkedinLink" style="display:flex; padding:6px;">
+					<img src="linkedin.png" style="height:20px; margin-right:4px;" />
+					<span style="margin-top:2px;">{LinkedinLink}</span>
+				</div>
+				<div class="GithubLink" style="display:flex; padding:6px;">
+					<img src="github.png" style="height:20px; margin-right:4px;" />
+					<span style="margin-top:2px;">{GithubLink}</span>
+				</div>
+				<div class="PersonalLink" style="display:flex; padding:6px;">
+					<img src="link.png" style="height:20px; margin-right:4px;" />
+					<span style="margin-top:2px;">{PersonalLink}</span>
+				</div>
+			</div>
+			<div class="Languages" style="background-color:#888; color:white; padding:16px; margin-top:8px;">
+				<h3 style="margin:0px;">Languages</h3>
+				<ul class="Languages">
+					<li class="Item">{*}</li>
+				</ul>
+			</div>
+			<div class="SkillsInAString" style="background-color:#888; color:white; padding:16px; margin-top:8px;">
+				<h3 style="margin:0px;">Skills</h3>
+				<ul class="Skills" style="columns:2;">
+					<li class="Item">{*}</li>
+				</ul>
+			</div>
+		</div>
 	</div>
-	<div style="float:right;">
-		<div style="background-color:#888; color:white; width:300px; padding:16px;">
-			<p class="Address">{Address}</p>
-			<p>{Email}</p>
-			<p class="ContactNumber">{ContactNumber}</p>
-			<p class="LinkedinAddress">{LinkedinAddress}</p>
-			<p class="GithubAddress">{GithubAddress}</p>
-			<p class="PersonalAddress">{PersonalAddress}</p>
-		</div>
-		<div class="Languages" style="background-color:#888; color:white; width:300px; padding:16px; margin-top:8px;">
-			<h3>Languages</h3>
-			<ul class="Languages">
-				<li class="Item">{*.Name} : {*.Level}</li>
-			</ul>
-		</div>
-		<div class="SkillsInAString" style="background-color:#888; color:white; width:300px; padding:16px; margin-top:8px;">
-			<h3>Skills</h3>
-			<ul class="Skills">
-				<li class="Item">{*}</li>
-			</ul>
-		</div>
-	</div>
-</div>
+</body>
+</html>

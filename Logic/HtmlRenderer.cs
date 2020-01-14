@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace CvGenerator.Logic
 {
@@ -64,14 +66,37 @@ namespace CvGenerator.Logic
                             foreach (var innerValue in (IEnumerable)value)
                             {
                                 var newElemStr = new StringBuilder(repeatingElemStr);
-                                newElemStr.Replace("{*}", innerValue.ToString());
+                                if (innerValue is IToHtml)
+                                    newElemStr.Replace("{*}", (innerValue as IToHtml).ToHtml());
+                                else
+                                    newElemStr.Replace("{*}", innerValue.ToString());
+
+                                List<string> classesToDelete = new List<string>();
                                 foreach (Match match in Regex.Matches(newElemStr.ToString(), @"\{\*\.(\w+)\}"))
                                 {
-                                    newElemStr.Replace(match.Value, innerValue.GetType().GetProperty(match.Groups[1].Value).GetValue(innerValue).ToString());
+                                    var itemName = match.Groups[1].Value;
+                                    var innerValueItem = innerValue.GetType().GetProperty(itemName).GetValue(innerValue);
+                                    if (innerValueItem == null || string.Empty.Equals(innerValueItem))
+                                    {
+                                        newElemStr.Replace(match.Value, "");
+                                        classesToDelete.Add("*." + itemName);
+                                    }
+                                    else
+                                        newElemStr.Replace(match.Value, innerValueItem.ToString());
                                 }
-                                repeatingElem.Parent.Add(XElement.Parse(newElemStr.ToString()));
+                                var newElem = XElement.Parse(newElemStr.ToString());
+                                foreach (var innerElem in newElem.Elements().Where(e => classesToDelete.Contains(e.Attribute("class")?.Value)).ToList())
+                                    innerElem.Remove();
+                                repeatingElem.Parent.Add(newElem);
                             }
-                            repeatingElem.Remove();
+                            if (repeatingElem.Parent.Elements().Count() == 1)
+                            {
+                                foreach (var elemToDelete in elemsByClass[prop.Name])
+                                    elemToDelete.Remove();
+                                break;
+                            }
+                            else
+                                repeatingElem.Remove();
                         }
                     }    
                 }

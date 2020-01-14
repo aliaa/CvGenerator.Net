@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CvGenerator.Logic;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CvGenerator.Models
 {
-    public class CvLanguageSkill
+    public class CvLanguageSkill : IToHtml
     {
         public enum Proficiency
         {
@@ -22,5 +20,10 @@ namespace CvGenerator.Models
 
         public string Name { get; set; }
         public Proficiency Level { get; set; }
+
+        public string ToHtml()
+        {
+            return Name + " : " + EnumHelper<Proficiency>.GetDisplayName(Level.ToString());
+        }
     }
 }

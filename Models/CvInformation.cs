@@ -13,9 +13,9 @@ namespace CvGenerator.Models
         public string Email { get; set; }
         public string Address { get; set; }
         public string ContactNumber { get; set; }
-        public string LinkedinAddress { get; set; }
-        public string GithubAddress { get; set; }
-        public string PersonalAddress { get; set; }
+        public string LinkedinLink { get; set; }
+        public string GithubLink { get; set; }
+        public string PersonalLink { get; set; }
         public string SkillsInAString { get; set; }
         public List<string> Skills
         {
