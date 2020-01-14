@@ -29,10 +29,11 @@ namespace CvGenerator.Logic
             };
         }
 
-        public async Task<byte[]> ConvertToPdf(string html)
+        public async Task<byte[]> ConvertToPdf(string resPath, string html)
         {
             using (var page = await browser.NewPageAsync())
             {
+                await page.GoToAsync(resPath);
                 await page.SetContentAsync(html);
                 return await page.PdfDataAsync(pdfOptions);
             }

@@ -42,9 +42,10 @@ namespace CvGenerator.Controllers
         public async Task<IActionResult> Index(CvInformation cv)
         {
             CleanupEmptyListItems(cv);
-            var html = templates.Values.First().Renderer.FillData(cv);
+            var selectedTemplate = templates.Values.First();
+            var html = selectedTemplate.Renderer.FillData(cv);
             //return File(Encoding.UTF8.GetBytes(html), "text/html", "cv.html");
-            byte[] pdfContent = await converter.ConvertToPdf(html);
+            byte[] pdfContent = await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html);
             return File(pdfContent, "application/pdf", "cv.pdf");
         }
 

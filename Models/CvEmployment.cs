@@ -8,9 +8,15 @@ namespace CvGenerator.Models
     [Serializable]
     public class CvEmployment : IToHtml
     {
+        [Display(Name = "Start Year")]
         public int StartYear { get; set; }
+
+        [Display(Name = "End Year")]
         public int? EndYear { get; set; }
+
+        [Display(Name = "Job Title")]
         public string JobTitle { get; set; }
+
         public string Company { get; set; }
 
         [Display(Name = "Still working here")]
