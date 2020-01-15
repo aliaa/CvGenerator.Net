@@ -17,6 +17,10 @@ namespace CvGenerator.Models
         public string GithubLink { get; set; }
         public string PersonalLink { get; set; }
         public string SkillsInAString { get; set; }
+
+        public int Margin { get; set; } = 32;
+        public int Scale { get; set; } = 100;
+
         public List<string> Skills
         {
             get

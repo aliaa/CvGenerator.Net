@@ -44,9 +44,17 @@ namespace CvGenerator.Controllers
             CleanupEmptyListItems(cv);
             var selectedTemplate = templates.Values.First();
             var html = selectedTemplate.Renderer.FillData(cv);
-            //return File(Encoding.UTF8.GetBytes(html), "text/html", "cv.html");
-            byte[] pdfContent = await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html);
+            byte[] pdfContent = await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html, cv.Margin, cv.Scale / 100m);
             return File(pdfContent, "application/pdf", "cv.pdf");
+        }
+
+        [HttpPost]
+        public IActionResult GetHtmlCv(CvInformation cv)
+        {
+            CleanupEmptyListItems(cv);
+            var selectedTemplate = templates.Values.First();
+            var html = selectedTemplate.Renderer.FillData(cv);
+            return File(Encoding.UTF8.GetBytes(html), "text/html", "cv.html");
         }
 
         private void CleanupEmptyListItems(CvInformation cv)

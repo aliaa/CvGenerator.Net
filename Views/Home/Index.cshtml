@@ -8,7 +8,7 @@
     <form asp-action="Index" id="form">
         <h1 class="display-4 text-center m-5">Build your own CV just in few steps!</h1>
 
-        <h4 class="m-4">1. Enter Your Basic Information:</h4>
+        <h4 class="m-4 mt-5">1. Enter Your Basic Information:</h4>
         <div class="m-4">
             <div class="row">
                 <div class="col-md form-group">
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <h4 class="m-4">2. Your Education History:</h4>
+        <h4 class="m-4 mt-5">2. Your Education History</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddEducation" value="Add Education" />
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <h4 class="m-4">3. Your Employment History:</h4>
+        <h4 class="m-4 mt-5">3. Your Employment History</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddEmployment" value="Add Employment" />
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <h4 class="m-4">4. Your Language Skills:</h4>
+        <h4 class="m-4  mt-5">4. Your Language Skills</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddLanguage" value="Add Language" />
@@ -97,7 +97,7 @@
             </div>
         </div>
 
-        <h4 class="m-4">5. Your Projects:</h4>
+        <h4 class="m-4  mt-5">5. Your Projects</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddProject" value="Add Project" />
@@ -110,8 +110,26 @@
             </div>
         </div>
 
+        <h4 class="m-4 mt-5">6. PDF Options</h4>
+        <div class="m-4">
+            <div class="row">
+                <div class="col-4 text-center">
+                    <h6>Margin</h6>
+                    <input type="range" asp-for="Margin" class="custom-range" min="0" max="64" value="32" oninput="document.getElementById('sliderValueMargin').innerHTML = this.value;" />
+                    <div><span id="sliderValueMargin">32</span>px</div>
+                </div>
+                <div class="col-4 text-center">
+                    <h6>Scale</h6>
+                    <input type="range" asp-for="Scale" class="custom-range" min="70" max="110" value="90" oninput="document.getElementById('sliderValueScale').innerHTML = this.value;" />
+                    <div><span id="sliderValueScale">90</span>%</div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="m-4 mt-5">That's it!</h4>
         <div class="text-center">
-            <input type="submit" value="Generate My CV!" class="btn btn-primary" />
+            <input type="submit" value="Get My CV!" class="btn btn-primary m-1" />
+            <input type="submit" formaction="Home/GetHtmlCv" value="Get HTML Version" class="btn btn-outline-primary m-1" />
         </div>
     </form>
 </div>
