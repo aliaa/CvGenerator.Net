@@ -9,19 +9,23 @@
         <h1 class="display-4 text-center m-5">Build your own CV just in few steps!</h1>
 
         <h4 class="m-4 mt-5">1. Enter Your Basic Information:</h4>
+        <h6 class="ml-4 text-muted">Note: You can leave some fields empty if you don't want to be on your CV.</h6>
         <div class="m-4">
             <div class="row">
                 <div class="col-md form-group">
                     First Name:
-                    <input asp-for="FirstName" class="form-control" required />
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="col-md form-group">
                     Last Name:
-                    <input asp-for="LastName" class="form-control" required />
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
                 <div class="col-md form-group">
                     Job Title:
-                    <input asp-for="JobTitle" class="form-control" required />
+                    <input asp-for="JobTitle" class="form-control" />
+                    <span asp-validation-for="JobTitle" class="text-danger"></span>
                 </div>
                 <div class="col-md form-group">
                     Email:
@@ -51,7 +55,17 @@
                     Protfolio/Personal Website:
                     <input asp-for="PersonalLink" class="form-control" />
                 </div>
-                <div class="col-md-9 form-group">
+                <div class="col-md-3 form-group">
+                    QR Code Title:
+                    <input asp-for="QrCodeTitle" class="form-control" />
+                </div>
+                <div class="col-md-3 form-group">
+                    QR Code Link:
+                    <input asp-for="QrCodeLink" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group">
                     Skills: <small class="text-secondary ml-4">(Separate by a comma " , ")</small>
                     <input asp-for="SkillsInAString" class="form-control" data-role="tagsinput" />
                 </div>
@@ -126,6 +140,16 @@
             </div>
         </div>
 
+        <div class="m-4 mt-5">
+            <div class="row">
+                <div class="col">
+                    <div asp-validation-summary="All">
+                        <span>Please correct the following errors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <h4 class="m-4 mt-5">That's it!</h4>
         <div class="text-center">
             <input type="button" id="btnShowPreview" value="Show Preview" class="btn btn-outline-primary m-1" />
@@ -162,6 +186,7 @@
 </div>
 
 @section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); };
     <script src="~/lib/pdf.js/pdf.min.js"></script>
     <script src="~/lib/pdf.js/pdf.worker.min.js"></script>
     <script type="text/javascript">

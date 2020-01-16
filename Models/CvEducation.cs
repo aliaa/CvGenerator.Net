@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CvGenerator.Models
 {
@@ -30,7 +31,7 @@ namespace CvGenerator.Models
                 sb.Append("Now");
             else
                 sb.Append(EndYear);
-            sb.Append("<br/>").Append(Title).Append("<br/>").Append(University);
+            sb.Append("<br/>").Append(HttpUtility.HtmlEncode(Title)).Append("<br/>").Append(University);
             return sb.ToString();
         }
     }

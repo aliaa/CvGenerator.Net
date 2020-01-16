@@ -56,6 +56,7 @@ namespace CvGenerator
             services.AddSingleton<IDbContext>(db);
 
             services.AddSingleton(new HtmlToPdfConverter());
+            services.AddSingleton(new QrGenerator());
 
             var env = services.FirstOrDefault(s => typeof(IWebHostEnvironment).IsEquivalentTo(s.ServiceType));
             var templatesPath = Path.Combine((env.ImplementationInstance as IWebHostEnvironment).ContentRootPath, "CvTemplates");

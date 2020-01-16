@@ -1,6 +1,7 @@
 ﻿using CvGenerator.Logic;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace CvGenerator.Models
 {
@@ -23,7 +24,7 @@ namespace CvGenerator.Models
 
         public string ToHtml()
         {
-            return Name + " : " + EnumHelper<Proficiency>.GetDisplayName(Level.ToString());
+            return HttpUtility.HtmlEncode(Name) + " : " + EnumHelper<Proficiency>.GetDisplayName(Level.ToString());
         }
     }
 }

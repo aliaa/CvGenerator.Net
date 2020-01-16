@@ -17,7 +17,7 @@ namespace CvGenerator.Logic
             Name = Path.GetFileName(directoryPath);
             RendererCache = new CachedData<HtmlRenderer>(
                         RefreshFunc: (x) => new HtmlRenderer(File.ReadAllText(Path.Combine(directoryPath, "index.html"))),
-                        ExpireSeconds: 600);
+                        ExpireSeconds: 1);
         }
     }
 }

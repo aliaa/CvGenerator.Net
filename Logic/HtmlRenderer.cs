@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Web;
 
 namespace CvGenerator.Logic
 {
@@ -26,7 +27,7 @@ namespace CvGenerator.Logic
             return !type.IsEquivalentTo(stringType) && enumerableType.IsAssignableFrom(type);
         }
 
-        public string FillData(object data)
+        public string FillData(object data, bool htmlEncodeStrings = true)
         {
             StringBuilder sb = new StringBuilder(HtmlTemplate);
 
@@ -35,8 +36,13 @@ namespace CvGenerator.Logic
             foreach (var prop in type.GetProperties().Where(p => !IsNonStringEnumerable(p.PropertyType)))
             {
                 var value = prop.GetValue(data);
-                if(value != null)
-                    sb.Replace("{" + prop.Name + "}", value.ToString());
+                if (value != null)
+                {
+                    string valueStr = value.ToString();
+                    if (htmlEncodeStrings)
+                        valueStr = HttpUtility.HtmlEncode(valueStr);
+                    sb.Replace("{" + prop.Name + "}", valueStr);
+                }
             }
             string result = sb.ToString();
 
@@ -44,22 +50,22 @@ namespace CvGenerator.Logic
             result = Regex.Replace(result, @"\{\w+\}", "");
 
             XElement rootElem = XElement.Parse(result);
-            var elemsByClass = rootElem.Descendants()
-                .Where(e => e.Attribute("class") != null)
-                .GroupBy(e => e.Attribute("class").Value)
+            var elemsByDataBind = rootElem.Descendants()
+                .Where(e => e.Attribute("data-bind") != null)
+                .GroupBy(e => e.Attribute("data-bind").Value)
                 .ToDictionary(k => k.Key);
             foreach (var prop in type.GetProperties())
             {
                 var value = prop.GetValue(data);
-                if(elemsByClass.ContainsKey(prop.Name))
+                if(elemsByDataBind.ContainsKey(prop.Name))
                 {
-                    foreach (var elem in elemsByClass[prop.Name])
+                    foreach (var elem in elemsByDataBind[prop.Name])
                     {
                         if (value == null || string.Empty.Equals(value))
                             elem.Remove();
                         else if (IsNonStringEnumerable(prop.PropertyType))
                         {
-                            var repeatingElem = elem.Elements().FirstOrDefault(e => e.Attribute("class")?.Value == "Item");
+                            var repeatingElem = elem.Elements().FirstOrDefault(e => e.Attribute("data-bind")?.Value == "Item");
                             if (repeatingElem == null)
                                 continue;
                             var repeatingElemStr = repeatingElem.ToString();
@@ -69,9 +75,14 @@ namespace CvGenerator.Logic
                                 if (innerValue is IToHtml)
                                     newElemStr.Replace("{*}", (innerValue as IToHtml).ToHtml());
                                 else
+                                {
+                                    string innerValueStr = innerValue.ToString();
+                                    if(htmlEncodeStrings)
+                                        innerValueStr = HttpUtility.HtmlEncode(innerValueStr);
                                     newElemStr.Replace("{*}", innerValue.ToString());
+                                }
 
-                                List<string> classesToDelete = new List<string>();
+                                List<string> dataBindsToDelete = new List<string>();
                                 foreach (Match match in Regex.Matches(newElemStr.ToString(), @"\{\*\.(\w+)\}"))
                                 {
                                     var itemName = match.Groups[1].Value;
@@ -79,19 +90,24 @@ namespace CvGenerator.Logic
                                     if (innerValueItem == null || string.Empty.Equals(innerValueItem))
                                     {
                                         newElemStr.Replace(match.Value, "");
-                                        classesToDelete.Add("*." + itemName);
+                                        dataBindsToDelete.Add("*." + itemName);
                                     }
                                     else
-                                        newElemStr.Replace(match.Value, innerValueItem.ToString());
+                                    {
+                                        string innerValueItemStr = innerValueItem.ToString();
+                                        if (htmlEncodeStrings)
+                                            innerValueItemStr = HttpUtility.HtmlEncode(innerValueItemStr);
+                                        newElemStr.Replace(match.Value, innerValueItemStr);
+                                    }
                                 }
                                 var newElem = XElement.Parse(newElemStr.ToString());
-                                foreach (var innerElem in newElem.Elements().Where(e => classesToDelete.Contains(e.Attribute("class")?.Value)).ToList())
+                                foreach (var innerElem in newElem.Elements().Where(e => dataBindsToDelete.Contains(e.Attribute("data-bind")?.Value)).ToList())
                                     innerElem.Remove();
                                 repeatingElem.Parent.Add(newElem);
                             }
                             if (repeatingElem.Parent.Elements().Count() == 1)
                             {
-                                foreach (var elemToDelete in elemsByClass[prop.Name])
+                                foreach (var elemToDelete in elemsByDataBind[prop.Name])
                                     elemToDelete.Remove();
                                 break;
                             }

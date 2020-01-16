@@ -19,18 +19,21 @@ namespace CvGenerator.Controllers
         private readonly ILogger<HomeController> logger;
         private readonly IWebHostEnvironment env;
         private readonly IDbContext db;
+        private readonly QrGenerator qrGenerator;
 
         private readonly Dictionary<string, Template> templates;
         private readonly HtmlToPdfConverter converter;
 
 
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, IDbContext db, HtmlToPdfConverter converter, Dictionary<string, Template> templates)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, 
+            IDbContext db, HtmlToPdfConverter converter, Dictionary<string, Template> templates, QrGenerator qrGenerator)
         {
             this.logger = logger;
             this.env = env;
             this.db = db;
             this.converter = converter;
             this.templates = templates;
+            this.qrGenerator = qrGenerator;
         }
 
         public IActionResult Index()
@@ -41,25 +44,33 @@ namespace CvGenerator.Controllers
         [HttpPost]
         public async Task<IActionResult> Preview(CvInformation cv)
         {
-            CleanupEmptyListItems(cv);
-            var selectedTemplate = templates.Values.First();
-            var html = selectedTemplate.Renderer.FillData(cv);
-            byte[] pdfContent = await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html, cv.Margin, cv.Scale / 100m);
+            byte[] pdfContent = await CreatePdf(cv);
             return Ok(Convert.ToBase64String(pdfContent));
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(CvInformation cv)
         {
+            if (!ModelState.IsValid)
+                return View(cv);
             if (!cv.AgreePrivacy)
                 return Error();
             if (cv.AgreeSave)
                 db.Save(cv);
+            byte[] pdfContent = await CreatePdf(cv);
+            return File(pdfContent, "application/pdf", "cv.pdf");
+        }
+
+        private async Task<byte[]> CreatePdf(CvInformation cv)
+        {
             CleanupEmptyListItems(cv);
+            if (!string.IsNullOrWhiteSpace(cv.QrCodeLink))
+            {
+                cv.QrCodeImage = qrGenerator.GetPngBase64Encoded(cv.QrCodeLink);
+            }
             var selectedTemplate = templates.Values.First();
             var html = selectedTemplate.Renderer.FillData(cv);
-            byte[] pdfContent = await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html, cv.Margin, cv.Scale / 100m);
-            return File(pdfContent, "application/pdf", "cv.pdf");
+            return await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html, cv.Margin, cv.Scale / 100m);
         }
 
         private void CleanupEmptyListItems(CvInformation cv)

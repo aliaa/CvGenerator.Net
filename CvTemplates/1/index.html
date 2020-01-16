@@ -4,74 +4,81 @@
 <body>
 	<div style="display:flex; width:100%;">
 
-		<div style="width:100%;">
+		<div style="width:66%;">
 			<h1 style="margin-bottom:0px;">{FirstName} {LastName}</h1>
 			<h3 style="margin-top:0px;">{JobTitle}</h3>
 
 			<div style="display:flex;">
-				<div class="Educations" style="margin:12px;">
+				<div data-bind="Educations" style="margin-top:20px;">
 					<h2>Education</h2>
-					<ul class="Educations">
-						<li class="Item" style="margin-bottom:10px;">{*}</li>
+					<ul data-bind="Educations">
+						<li data-bind="Item" style="margin-bottom:10px; margin-left:-16px;">{*}</li>
 					</ul>
 				</div>
-				<div class="Employments" style="margin:12px;">
+				<div data-bind="Employments" style="margin-top:20px; margin-left:20px;">
 					<h2>Employment</h2>
-					<ul class="Employments">
-						<li class="Item" style="margin-bottom:10px;">{*}</li>
+					<ul data-bind="Employments">
+						<li data-bind="Item" style="margin-bottom:10px; margin-left:-16px;">{*}</li>
 					</ul>
 				</div>
 			</div>
-			<div style="margin-top:20px;" class="Projects">
+			<div style="margin-top:20px;" data-bind="Projects">
 				<h2>Projects/Experiences</h2>
-				<ul class="Projects">
-					<li class="Item" style="margin-bottom:16px;">
-						<b>{*.Year} - {*.Name}:</b> {*.Description}<br/>
-						<div class="*.Role">Role: {*.Role}</div>
-						<div class="*.TechStack">Tech Stack: {*.TechStack}</div>
+				<ul data-bind="Projects">
+					<li data-bind="Item" style="margin-bottom:16px; margin-left:-16px;">
+						<span style="font-size:large; font-weight:bold;">{*.Year} - {*.Name}</span>: {*.Description}<br/>
+						<div data-bind="*.Role"><em>Role:</em> {*.Role}</div>
+						<div data-bind="*.Link"><em>Link:</em> {*.Link}</div>
+						<div data-bind="*.TechStack"><em>Tech Stack:</em> {*.TechStack}</div>
 					</li>
 				</ul>
 			</div>
 		</div>
 
-		<div style="min-width:270px;">
+		<div style="min-width:300px; width:34%; margin-left: 16px;">
 			<div style="background-color:#888; color:white; padding:16px;">
-				<div class="Address" style="display:flex; padding:6px;">
-					<img src="location.png" style="height:20px; margin-right:4px;" />
+				<div data-bind="Address" style="display:flex; padding:6px;">
+					<img src="location.png" style="height:20px; margin-right:8px;" />
 					<span>{Address}</span>
 				</div>
-				<div class="Email" style="display:flex; padding:6px;">
-					<img src="email.png" style="height:20px; margin-right:4px;" />
+				<div data-bind="Email" style="display:flex; padding:6px;">
+					<img src="email.png" style="height:20px; margin-right:8px;" />
 					<span style="margin-top:2px;">{Email}</span>
 				</div>
-				<div class="ContactNumber" style="display:flex; padding:6px;">
-					<img src="phone.png" style="height:20px; margin-right:4px;" />
+				<div data-bind="ContactNumber" style="display:flex; padding:6px;">
+					<img src="phone.png" style="height:20px; margin-right:8px;" />
 					<span style="margin-top:2px;">{ContactNumber}</span>
 				</div>
-				<div class="LinkedinLink" style="display:flex; padding:6px;">
-					<img src="linkedin.png" style="height:20px; margin-right:4px;" />
+				<div data-bind="LinkedinLink" style="display:flex; padding:6px;">
+					<img src="linkedin.png" style="height:20px; margin-right:8px;" />
 					<span style="margin-top:2px;">{LinkedinLink}</span>
 				</div>
-				<div class="GithubLink" style="display:flex; padding:6px;">
-					<img src="github.png" style="height:20px; margin-right:4px;" />
+				<div data-bind="GithubLink" style="display:flex; padding:6px;">
+					<img src="github.png" style="height:20px; margin-right:8px;" />
 					<span style="margin-top:2px;">{GithubLink}</span>
 				</div>
-				<div class="PersonalLink" style="display:flex; padding:6px;">
-					<img src="personal.png" style="height:20px; margin-right:4px;" />
+				<div data-bind="PersonalLink" style="display:flex; padding:6px;">
+					<img src="personal.png" style="height: 20px; margin-right:8px;" />
 					<span style="margin-top:2px;">{PersonalLink}</span>
 				</div>
 			</div>
-			<div class="Languages" style="background-color:#888; color:white; padding:16px; margin-top:8px;">
+			<div data-bind="Languages" style="background-color:#888; color:white; padding:16px; margin-top:8px;">
 				<h3 style="margin:0px;">Languages</h3>
-				<ul class="Languages">
-					<li class="Item">{*}</li>
+				<ul data-bind="Languages">
+					<li data-bind="Item" style="margin-left:-16px;">{*}</li>
 				</ul>
 			</div>
-			<div class="SkillsInAString" style="background-color:#888; color:white; padding:16px; margin-top:8px;">
+			<div data-bind="SkillsInAString" style="background-color:#888; color:white; padding:16px; margin-top:8px;">
 				<h3 style="margin:0px;">Skills</h3>
-				<ul class="Skills" style="columns:2;">
-					<li class="Item">{*}</li>
+				<ul data-bind="Skills" style="columns:2;">
+					<li data-bind="Item" style="margin-left:-16px;">{*}</li>
 				</ul>
+			</div>
+			<div data-bind="QrCodeImage" style="background-color:#888; color:white; padding:16px; margin-top:8px;">
+				<h3 style="margin:0px;" data-bind="QrCodeTitle">{QrCodeTitle}</h3>
+				<div style="margin-top:24px; text-align:center;">
+					<img src="{QrCodeImage}" style="width:200px;" />
+				</div>
 			</div>
 		</div>
 	</div>

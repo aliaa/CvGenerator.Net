@@ -1,14 +1,19 @@
 ﻿using EasyMongoNet;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace CvGenerator.Models
 {
     public class CvInformation : MongoEntity
     {
+        [Required(ErrorMessage = "Your first name is required!")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "Your last name is required!")]
         public string LastName { get; set; }
+        [Required(ErrorMessage = "Your job title is required!")]
         public string JobTitle { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
@@ -16,6 +21,12 @@ namespace CvGenerator.Models
         public string LinkedinLink { get; set; }
         public string GithubLink { get; set; }
         public string PersonalLink { get; set; }
+
+        public string QrCodeTitle { get; set; }
+        public string QrCodeLink { get; set; }
+        [BsonIgnore]
+        public string QrCodeImage { get; set; }
+
         public string SkillsInAString { get; set; }
 
         public int Margin { get; set; } = 32;
@@ -32,7 +43,7 @@ namespace CvGenerator.Models
                 return SkillsInAString.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
             }
         }
-        
+
         public List<CvLanguageSkill> Languages { get; set; } = new List<CvLanguageSkill>();
         public List<CvEmployment> Employments { get; set; } = new List<CvEmployment>();
         public List<CvEducation> Educations { get; set; } = new List<CvEducation>();
