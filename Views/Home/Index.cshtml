@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <h4 class="m-4 mt-5">6. PDF Options</h4>
+        <h4 class="m-4 mt-5">6. Optional Settings</h4>
         <div class="m-4">
             <div class="row">
                 <div class="col-4 text-center">
@@ -128,17 +128,45 @@
 
         <h4 class="m-4 mt-5">That's it!</h4>
         <div class="text-center">
-            <input type="submit" value="Get My CV!" class="btn btn-primary m-1" />
-            <input type="submit" formaction="Home/GetHtmlCv" value="Get HTML Version" class="btn btn-outline-primary m-1" />
+            <input type="button" id="btnShowPreview" value="Show Preview" class="btn btn-outline-primary m-1" />
+        </div>
+
+        <div id="divPreview" class="d-none">
+            <h4 class="m-4 mt-5">Preview:</h4>
+            <div class="row justify-content-center">
+                <div class="p-3 d-inline-block" style="background-color:#f6f6f6;">
+                    <canvas id="pdfPreview"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div id="divDownload" class="d-none">
+            <h4 class="m-4 mt-5">Download Your CV!</h4>
+            <div class="row m-4">
+                <div class="col">
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" class="custom-control-input" id="chkAgreePrivacy" asp-for="AgreePrivacy">
+                        <label class="custom-control-label" for="chkAgreePrivacy">I have read the <a asp-action="Privacy">Privacy page</a> and agree with all terms and conditions.</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" class="custom-control-input" id="chkAgreeSave" asp-for="AgreeSave">
+                        <label class="custom-control-label" for="chkAgreeSave">I consent this site to save my personal information in order to let employers find me.</label>
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" id="btnDownload" class="btn btn-primary disabled" disabled value="Download Now" />
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 </div>
 
 @section Scripts {
+    <script src="~/lib/pdf.js/pdf.min.js"></script>
+    <script src="~/lib/pdf.js/pdf.worker.min.js"></script>
     <script type="text/javascript">
         $("#btnAddEducation").on("click", function () {
             $.ajax({
-                type: "POST",
                 url: "/Home/AddEducation",
                 success: function (partialView) {
                     var i = $("#divEducations").children().length;
@@ -151,7 +179,6 @@
 
         $("#btnAddEmployment").on("click", function () {
             $.ajax({
-                type: "POST",
                 url: "/Home/AddEmployment",
                 success: function (partialView) {
                     var i = $("#divEmployments").children().length;
@@ -164,7 +191,6 @@
 
         $("#btnAddLanguage").on("click", function () {
             $.ajax({
-                type: "POST",
                 url: "/Home/AddLanguageSkill",
                 success: function (partialView) {
                     var i = $("#divLanguages").children().length;
@@ -177,7 +203,6 @@
 
         $("#btnAddProject").on("click", function () {
             $.ajax({
-                type: "POST",
                 url: "/Home/AddProject",
                 success: function (partialView) {
                     var i = $("#divProjects").children().length;
@@ -186,6 +211,33 @@
                     $('#divProjects').append(item);
                 }
             });
+        });
+
+        $("#btnShowPreview").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/Preview",
+                data: $('form').serialize(),
+                success: function (data) {
+                    var dataBytes = atob(data);
+                    var canvas = document.getElementById("pdfPreview");
+                    RenderPdfIntoCanvas(dataBytes, canvas);
+                    $("#divPreview").removeClass("d-none");
+                    $("#divDownload").removeClass("d-none");
+                }
+            });
+        });
+
+        $("#chkAgreePrivacy").on("click", function () {
+            var btn = $("#btnDownload");
+            if (this.checked) {
+                btn.removeClass("disabled");
+                btn.removeAttr("disabled");
+            }
+            else {
+                btn.addClass("disabled");
+                btn.attr("disabled", "disabled");
+            }
         });
     </script>
 }

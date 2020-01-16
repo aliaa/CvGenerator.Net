@@ -39,22 +39,27 @@ namespace CvGenerator.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(CvInformation cv)
+        public async Task<IActionResult> Preview(CvInformation cv)
         {
             CleanupEmptyListItems(cv);
             var selectedTemplate = templates.Values.First();
             var html = selectedTemplate.Renderer.FillData(cv);
             byte[] pdfContent = await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html, cv.Margin, cv.Scale / 100m);
-            return File(pdfContent, "application/pdf", "cv.pdf");
+            return Ok(Convert.ToBase64String(pdfContent));
         }
 
         [HttpPost]
-        public IActionResult GetHtmlCv(CvInformation cv)
+        public async Task<IActionResult> Index(CvInformation cv)
         {
+            if (!cv.AgreePrivacy)
+                return Error();
+            if (cv.AgreeSave)
+                db.Save(cv);
             CleanupEmptyListItems(cv);
             var selectedTemplate = templates.Values.First();
             var html = selectedTemplate.Renderer.FillData(cv);
-            return File(Encoding.UTF8.GetBytes(html), "text/html", "cv.html");
+            byte[] pdfContent = await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html, cv.Margin, cv.Scale / 100m);
+            return File(pdfContent, "application/pdf", "cv.pdf");
         }
 
         private void CleanupEmptyListItems(CvInformation cv)
@@ -87,16 +92,12 @@ namespace CvGenerator.Controllers
 
         private IActionResult GetEditorTemplatePartialView(string name) => PartialView("EditorTemplates/" + name);
 
-        [HttpPost]
         public IActionResult AddEducation() => GetEditorTemplatePartialView(nameof(CvEducation));
 
-        [HttpPost]
         public IActionResult AddEmployment() => GetEditorTemplatePartialView(nameof(CvEmployment));
 
-        [HttpPost]
         public IActionResult AddLanguageSkill() => GetEditorTemplatePartialView(nameof(CvLanguageSkill));
 
-        [HttpPost]
         public IActionResult AddProject() => GetEditorTemplatePartialView(nameof(CvProject));
     }
 }

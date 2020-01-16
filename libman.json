@@ -5,6 +5,10 @@
     {
       "library": "bootstrap-tagsinput@0.8.0",
       "destination": "wwwroot/lib/bootstrap-tagsinput/"
+    },
+    {
+      "library": "pdf.js@2.3.200",
+      "destination": "wwwroot/lib/pdf.js/"
     }
   ]
 }

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using EasyMongoNet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace CvGenerator.Models
 {
-    [Serializable]
-    public class CvInformation
+    public class CvInformation : MongoEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,6 +20,8 @@ namespace CvGenerator.Models
 
         public int Margin { get; set; } = 32;
         public int Scale { get; set; } = 100;
+        public bool AgreePrivacy { get; set; }
+        public bool AgreeSave { get; set; }
 
         public List<string> Skills
         {
