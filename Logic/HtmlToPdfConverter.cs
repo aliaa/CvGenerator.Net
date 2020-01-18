@@ -1,6 +1,8 @@
 ﻿using PuppeteerSharp;
 using PuppeteerSharp.Media;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace CvGenerator.Logic
@@ -11,8 +13,34 @@ namespace CvGenerator.Logic
 
         public HtmlToPdfConverter()
         {
-            Task.Run(() => new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision)).Wait();
+            var downloadTask = Task.Run(() => new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision));
+            downloadTask.Wait();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                var path = Launcher.GetExecutablePath();
+                Bash($"chmod 777 {path}");
+            }
             browser = Task.Run(() => Puppeteer.LaunchAsync(new LaunchOptions { Headless = true })).Result;
+        }
+
+        private void Bash(string cmd)
+        {
+            var escapedArgs = cmd.Replace("\"", "\\\"");
+
+            var process = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            string result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
         }
 
         public async Task<byte[]> ConvertToPdf(string resPath, string html, int margin = 32, decimal scale = 1)

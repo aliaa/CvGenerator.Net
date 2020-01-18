@@ -51,6 +51,8 @@ namespace CvGenerator
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
+            var env = services.FirstOrDefault(s => typeof(IWebHostEnvironment).IsEquivalentTo(s.ServiceType));
+
             // Add mongodb service:
             var db = new MongoDbContext(Configuration.GetValue<string>("DBName"), Configuration.GetValue<string>("MongoConnString"));
             services.AddSingleton<IDbContext>(db);
@@ -58,7 +60,6 @@ namespace CvGenerator
             services.AddSingleton(new HtmlToPdfConverter());
             services.AddSingleton(new QrGenerator());
 
-            var env = services.FirstOrDefault(s => typeof(IWebHostEnvironment).IsEquivalentTo(s.ServiceType));
             var templatesPath = Path.Combine((env.ImplementationInstance as IWebHostEnvironment).ContentRootPath, "CvTemplates");
             var templatesCache = new Dictionary<string, Template>();
             foreach (var folder in Directory.GetDirectories(templatesPath))

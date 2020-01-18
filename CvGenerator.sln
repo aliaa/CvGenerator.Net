@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CvGenerator", "CvGenerator.csproj", "{0C11D6A9-4490-453E-881A-D220999D3AF9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyMongoNet", "..\EasyMongoNet\EasyMongoNet.csproj", "{45E0FB92-1B3E-4169-A5B6-0C00915F7F8E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{0C11D6A9-4490-453E-881A-D220999D3AF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C11D6A9-4490-453E-881A-D220999D3AF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C11D6A9-4490-453E-881A-D220999D3AF9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45E0FB92-1B3E-4169-A5B6-0C00915F7F8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45E0FB92-1B3E-4169-A5B6-0C00915F7F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45E0FB92-1B3E-4169-A5B6-0C00915F7F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45E0FB92-1B3E-4169-A5B6-0C00915F7F8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
