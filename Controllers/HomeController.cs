@@ -70,7 +70,7 @@ namespace CvGenerator.Controllers
             }
             var selectedTemplate = templates.Values.First();
             var html = selectedTemplate.Renderer.FillData(cv);
-            return await converter.ConvertToPdf(selectedTemplate.DirectoryPath, html, cv.Margin, cv.Scale / 100m);
+            return await converter.ConvertToPdf(null, html, cv.Margin, cv.Scale / 100m);
         }
 
         private void CleanupEmptyListItems(CvInformation cv)

@@ -20,7 +20,7 @@ namespace CvGenerator.Logic
                 var path = Launcher.GetExecutablePath();
                 Bash($"chmod 777 {path}");
             }
-            browser = Task.Run(() => Puppeteer.LaunchAsync(new LaunchOptions { Headless = true })).Result;
+            browser = Task.Run(() => Puppeteer.LaunchAsync(new LaunchOptions { Headless = true, Args = new string[] { "--no-sandbox" } })).Result;
         }
 
         private void Bash(string cmd)
@@ -47,7 +47,8 @@ namespace CvGenerator.Logic
         {
             using (var page = await browser.NewPageAsync())
             {
-                await page.GoToAsync(resPath);
+                if(resPath != null)
+                    await page.GoToAsync(resPath);
                 await page.SetContentAsync(html);
 
                 string marginStr = margin + "px";
