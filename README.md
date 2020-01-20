@@ -3,7 +3,7 @@
 
 An Asp.Net Core 3.1 MVC project to generate CV from user's information.
 
-Used Open Source Librarries and Projects:
+Used Open Source Libraries and Projects:
 * [PuppetierSharp](https://github.com/kblok/puppeteer-sharp): For generating PDF from Html.
 * [QRCoder](https://github.com/codebude/QRCoder): For generating QR Code.
 * [EasyMongo.Net](https://github.com/aliaa/EasyMongo.Net): My library to easily interact with MongoDB.
