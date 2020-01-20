@@ -33,6 +33,7 @@ namespace CvGenerator.Models
         public int Scale { get; set; } = 100;
         public bool AgreePrivacy { get; set; }
         public bool AgreeSave { get; set; }
+        public string ThemeColor { get; set; }
 
         public List<string> Skills
         {

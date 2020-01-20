@@ -128,14 +128,19 @@
         <div class="m-4">
             <div class="row">
                 <div class="col-4 text-center">
-                    <h6>Margin</h6>
+                    <h6 class="mb-4">Margin</h6>
                     <input type="range" asp-for="Margin" class="custom-range" min="0" max="64" value="32" oninput="document.getElementById('sliderValueMargin').innerHTML = this.value;" />
                     <div><span id="sliderValueMargin">32</span>px</div>
                 </div>
                 <div class="col-4 text-center">
-                    <h6>Scale</h6>
+                    <h6 class="mb-4">Scale</h6>
                     <input type="range" asp-for="Scale" class="custom-range" min="70" max="110" value="90" oninput="document.getElementById('sliderValueScale').innerHTML = this.value;" />
                     <div><span id="sliderValueScale">90</span>%</div>
+                </div>
+                <div class="col-4 text-center">
+                    <h6 class="mb-4">Theme Color</h6>
+                    <span class="theme-color-picker"></span>
+                    <input type="hidden" asp-for="ThemeColor" class="theme-color-value" />
                 </div>
             </div>
         </div>
@@ -189,6 +194,11 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); };
     <script src="~/lib/pdf.js/pdf.min.js"></script>
     <script src="~/lib/pdf.js/pdf.worker.min.js"></script>
+
+    <script src="~/lib/jquery-colorpickersliders/jquery.colorpickersliders.js"></script>
+    <link rel="stylesheet" href="~/lib/jquery-colorpickersliders/jquery.colorpickersliders.css" />
+    <script src="~/lib/tinycolor.js"></script>
+
     <script type="text/javascript">
         $("#btnAddEducation").on("click", function () {
             $.ajax({
@@ -262,6 +272,27 @@
             else {
                 btn.addClass("disabled");
                 btn.attr("disabled", "disabled");
+            }
+        });
+
+        $(".theme-color-picker").ColorPickerSliders({
+            previewformat: 'hsl',
+            flat: true,
+            customswatches: false,
+            swatches: [],
+            color: '#526178',
+            order: {
+                hsl: 1,
+                preview: 2
+            },
+            labels: {
+                hslhue: 'Hue',
+                hslsaturation: "Saturation",
+                hsllightness: "Lightness",
+                preview: "Preview"
+            },
+            onchange: function (container, color) {
+                $("#ThemeColor").attr('value', color.tiny.toHexString());
             }
         });
     </script>
