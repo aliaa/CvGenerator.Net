@@ -140,15 +140,15 @@
             </div>
         </div>
 
-        <div class="m-4 mt-5">
+        @*<div class="m-4 mt-5">
             <div class="row">
                 <div class="col">
-                    <div asp-validation-summary="All">
+                    <div asp-validation-summary="All" class="text-danger">
                         <span>Please correct the following errors</span>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
         <h4 class="m-4 mt-5">That's it!</h4>
         <div class="text-center">
@@ -172,10 +172,10 @@
                         <input type="checkbox" class="custom-control-input" id="chkAgreePrivacy" asp-for="AgreePrivacy">
                         <label class="custom-control-label" for="chkAgreePrivacy">I have read the <a asp-action="Privacy">Privacy page</a> and agree with all terms and conditions.</label>
                     </div>
-                    <div class="custom-control custom-checkbox mb-3">
+                    @*<div class="custom-control custom-checkbox mb-3">
                         <input type="checkbox" class="custom-control-input" id="chkAgreeSave" asp-for="AgreeSave">
                         <label class="custom-control-label" for="chkAgreeSave">I consent this site to save my personal information in order to let employers find me.</label>
-                    </div>
+                    </div>*@
                     <div class="text-center">
                         <input type="submit" id="btnDownload" class="btn btn-primary disabled" disabled value="Download Now" />
                     </div>
