@@ -1,11 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration config
+@{ var githubLink = config.GetValue<string>("GithubLink"); }
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="CV,Resume,Create CV,Github,Asp.Net Core" />
     <meta name="description" content="This is an open source Asp.Net Core project to generate CV" />
-    <title>@ViewData["Title"] - CV Generator</title>
+    <title>@ViewData["Title"] - CV-Generator.Net</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-tagsinput/bootstrap-tagsinput.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -14,7 +17,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CV Generator</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CV-Generator.Net</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,8 +28,8 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About Me</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="https://github.com/aliaa/CvGenerator.Net">
-                                <img src="~/github.png" height="20" class="align-top" />
+                            <a class="nav-link text-dark" href="@githubLink">
+                                <img src="~/image/github.png" height="20" class="align-top" />
                                 Github
                             </a>
                         </li>
@@ -34,9 +37,9 @@
                 </div>
             </div>
         </nav>
-        <a href="https://github.com/aliaa/CvGenerator.Net">
-            <img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" 
-                 src="https://github.blog/wp-content/uploads/2008/12/forkme_right_green_007200.png?resize=149%2C149" 
+        <a href="@githubLink">
+            <img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149"
+                 src="https://github.blog/wp-content/uploads/2008/12/forkme_right_green_007200.png?resize=149%2C149"
                  class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
         </a>
     </header>

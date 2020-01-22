@@ -1,4 +1,6 @@
 ﻿@model CvGenerator.Models.CvInformation
+@inject Dictionary<string, Template> templates
+@inject Microsoft.Extensions.Configuration.IConfiguration config
 
 @{
     ViewData["Title"] = "Home Page";
@@ -6,10 +8,10 @@
 
 <div>
     <form asp-action="Index" id="form">
-        <h1 class="display-4 text-center m-5">Build your own CV just in few steps!</h1>
+        <h1 class="display-4 text-center m-5">Build your own CV in few steps!</h1>
 
         <h4 class="m-4 mt-5">1. Enter Your Basic Information:</h4>
-        <h6 class="ml-4 text-muted">Note: You can leave some fields empty if you don't want to be on your CV.</h6>
+        <h6 class="ml-4 text-muted">Note: You can leave some fields empty if you don't want to be in your CV.</h6>
         <div class="m-4">
             <div class="row">
                 <div class="col-md form-group">
@@ -143,21 +145,40 @@
                     <input type="hidden" asp-for="ThemeColor" class="theme-color-value" />
                 </div>
             </div>
-        </div>
-
-        @*<div class="m-4 mt-5">
             <div class="row">
-                <div class="col">
-                    <div asp-validation-summary="All" class="text-danger">
-                        <span>Please correct the following errors</span>
-                    </div>
+                <div class="col-3 form-group">
+                    Paper Size:
+                    <select asp-for="PaperSize" class="form-control">
+                        <option value="A4">A4</option>
+                        <option value="Letter">Letter</option>
+                    </select>
                 </div>
             </div>
-        </div>*@
+        </div>
+
+
+        <h4 class="m-4 mt-5">7. Choose One of Templates:</h4>
+        <div class="m-4">
+            <div class="d-flex align-items-center">
+                <div class="col-3 form-group">
+                    Template Name:
+                    <select asp-for="TemplateName" class="form-control">
+                        @foreach (var t in templates)
+                        {
+                            <option value="@t.Key">@t.Key</option>
+                        }
+                    </select>
+                </div>
+                <div class="m-0">
+                    @{ var githubLink = config.GetValue<string>("GithubLink"); }
+                    <a href="@githubLink">Contribute to design more templates!</a>
+                </div>
+            </div>
+        </div>
 
         <h4 class="m-4 mt-5">That's it!</h4>
         <div class="text-center">
-            <input type="button" id="btnShowPreview" value="Show Preview" class="btn btn-outline-primary m-1" />
+            <input type="button" id="btnShowPreview" value="Show Preview" class="btn btn-primary m-1" />
         </div>
 
         <div id="divPreview" class="d-none">

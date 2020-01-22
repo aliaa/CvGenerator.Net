@@ -43,7 +43,7 @@ namespace CvGenerator.Logic
             process.WaitForExit();
         }
 
-        public async Task<byte[]> ConvertToPdf(string resPath, string html, int margin = 32, decimal scale = 1, bool showFooter = true)
+        public async Task<byte[]> ConvertToPdf(string resPath, string html, PaperFormat paperFormat, int margin = 32, decimal scale = 1, bool showFooter = true)
         {
             using (var page = await browser.NewPageAsync())
             {
@@ -54,7 +54,7 @@ namespace CvGenerator.Logic
                 string marginStr = margin + "px";
                 var pdfOptions = new PdfOptions
                 {
-                    Format = PaperFormat.A4,
+                    Format = paperFormat,
                     MarginOptions = new MarginOptions
                     {
                         Left = marginStr,

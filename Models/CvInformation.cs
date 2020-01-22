@@ -34,6 +34,8 @@ namespace CvGenerator.Models
         public bool AgreePrivacy { get; set; }
         public bool AgreeSave { get; set; }
         public string ThemeColor { get; set; }
+        public string PaperSize { get; set; }
+        public string TemplateName { get; set; }
 
         public List<string> Skills
         {

@@ -5,12 +5,11 @@ using CvGenerator.Models;
 using CvGenerator.Logic;
 using Microsoft.AspNetCore.Hosting;
 using EasyMongoNet;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
-using System.Text;
+using PuppeteerSharp.Media;
 
 namespace CvGenerator.Controllers
 {
@@ -68,9 +67,10 @@ namespace CvGenerator.Controllers
             {
                 cv.QrCodeImage = qrGenerator.GetPngBase64Encoded(cv.QrCodeLink);
             }
-            var selectedTemplate = templates.Values.First();
+            var selectedTemplate = templates[cv.TemplateName];
             var html = selectedTemplate.Renderer.FillData(cv);
-            return await converter.ConvertToPdf(null, html, cv.Margin, cv.Scale / 100m);
+            var paperFormat = cv.PaperSize == "A4" ? PaperFormat.A4 : PaperFormat.Letter;
+            return await converter.ConvertToPdf(null, html, paperFormat , cv.Margin, cv.Scale / 100m);
         }
 
         private void CleanupEmptyListItems(CvInformation cv)
