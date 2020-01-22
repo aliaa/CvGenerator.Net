@@ -85,11 +85,13 @@ namespace CvGenerator.Controllers
                 cv.Projects.Remove(item);
         }
 
+        [HttpGet("/About")]
         public IActionResult About()
         {
             return View();
         }
 
+        [HttpGet("/Privacy")]
         public IActionResult Privacy()
         {
             return View();
