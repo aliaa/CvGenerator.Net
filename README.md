@@ -1,7 +1,7 @@
 # CvGenerator.Net
 [See Online Version](https://cv-generator-net-aliaa.fandogh.cloud/)
 
-An Asp.Net Core 3.1 MVC project to generate CV from user's information.
+A Dockerized Asp.Net Core 3.1 MVC project to generate CV from user's information.
 
 
 Used Open Source Libraries and Projects:
