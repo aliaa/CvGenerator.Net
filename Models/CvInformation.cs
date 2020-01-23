@@ -9,6 +9,8 @@ namespace CvGenerator.Models
 {
     public class CvInformation : MongoEntity
     {
+        public string PortraitImage { get; set; }
+
         [Required(ErrorMessage = "Your first name is required!")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Your last name is required!")]

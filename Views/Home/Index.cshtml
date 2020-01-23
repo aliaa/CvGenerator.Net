@@ -10,8 +10,23 @@
     <form asp-action="Index" id="form">
         <h1 class="display-4 text-center m-5">Build your own CV in few steps!</h1>
 
-        <h4 class="m-4 mt-5">1. Enter Your Basic Information:</h4>
-        <h6 class="ml-4 text-muted">Note: You can leave some fields empty if you don't want to be in your CV.</h6>
+        <h4 class="m-4 mt-5">1. Enter A Picture Of Yourself (Optional):</h4>
+        <h6 class="ml-4 text-muted">File size should be less than 100KB and be square.</h6>
+        <div class="m-4">
+            <div class="d-flex align-items-center">
+                <div class="">
+                    <input type="file" id="inputPicture" />
+                </div>
+                <div class="d-none" id="divPicturePreview">
+                    <img id="imgPicturePreview" class="portrait-preview mx-2" />
+                    <input type="button" class="m-5 btn btn-outline-dark" value="Remove" onclick="RemoveSelectedImage()" />
+                    <input type="hidden" id="hidPortraitImage" asp-for="PortraitImage" />
+                </div>
+            </div>
+        </div>
+
+        <h4 class="m-4 mt-5">2. Enter Your Basic Information:</h4>
+        <h6 class="ml-4 text-muted">You can leave some fields empty if you don't want to be in your CV.</h6>
         <div class="m-4">
             <div class="row">
                 <div class="col-md form-group">
@@ -74,7 +89,7 @@
             </div>
         </div>
 
-        <h4 class="m-4 mt-5">2. Your Education History</h4>
+        <h4 class="m-4 mt-5">3. Your Education History</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddEducation" value="Add Education" />
@@ -87,7 +102,7 @@
             </div>
         </div>
 
-        <h4 class="m-4 mt-5">3. Your Employment History</h4>
+        <h4 class="m-4 mt-5">4. Your Employment History</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddEmployment" value="Add Employment" />
@@ -100,7 +115,7 @@
             </div>
         </div>
 
-        <h4 class="m-4  mt-5">4. Your Language Skills</h4>
+        <h4 class="m-4  mt-5">5. Your Language Skills</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddLanguage" value="Add Language" />
@@ -113,7 +128,7 @@
             </div>
         </div>
 
-        <h4 class="m-4  mt-5">5. Your Projects</h4>
+        <h4 class="m-4  mt-5">6. Your Projects</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddProject" value="Add Project" />
@@ -126,7 +141,7 @@
             </div>
         </div>
 
-        <h4 class="m-4 mt-5">6. Optional Settings</h4>
+        <h4 class="m-4 mt-5">7. Optional Settings</h4>
         <div class="m-4">
             <div class="row">
                 <div class="col-4 text-center">
@@ -157,7 +172,7 @@
         </div>
 
 
-        <h4 class="m-4 mt-5">7. Choose One of Templates:</h4>
+        <h4 class="m-4 mt-5">8. Choose One of Templates:</h4>
         <div class="m-4">
             <div class="d-flex align-items-center">
                 <div class="col-3 form-group">
@@ -221,6 +236,37 @@
     <script src="~/lib/tinycolor.js"></script>
 
     <script type="text/javascript">
+
+        $("#inputPicture").on("change", function (e) {
+            var file = e.target.files[0];
+            if (!file || !file.type.match("image.*")) {
+                alert("Invalid image file! Please choose a correct image file.")
+                return;
+            }
+            if (file.size > 102400) {
+                alert("File size should be less than 100KB!");
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = (function(theFile) {
+                return function (e) {
+                    $("#divPicturePreview").removeClass("d-none");
+                    $("#imgPicturePreview").attr("src", e.target.result);
+                    $("#hidPortraitImage").attr("value", e.target.result);
+                }
+            })(file);
+
+              // Read in the image file as a data URL.
+            reader.readAsDataURL(file);
+        });
+
+        function RemoveSelectedImage() {
+            $("#divPicturePreview").addClass("d-none");
+            $("#imgPicturePreview").attr("src", null);
+            $("#hidPortraitImage").attr("value", null);
+            $("#inputPicture").val("");
+        }
+
         $("#btnAddEducation").on("click", function () {
             $.ajax({
                 url: "/Home/AddEducation",

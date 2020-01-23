@@ -5,8 +5,15 @@
 	<div style="display:flex; width:100%;">
 
 		<div style="width:66%;">
-			<h1 style="margin-bottom:0px;">{FirstName} {LastName}</h1>
-			<h3 style="margin-top:0px;">{JobTitle}</h3>
+			<div style="display:flex; align-items:center;">
+				<div data-bind="PortraitImage">
+					<img style="width:120px; height:120px; border-radius:50%; margin-right:10px;" src="{PortraitImage}" />
+				</div>
+				<div>
+					<h1 style="margin-bottom:0px;">{FirstName} {LastName}</h1>
+					<h3 style="margin-top:0px;">{JobTitle}</h3>
+				</div>
+			</div>
 
 			<div style="display:flex;">
 				<div data-bind="Educations" style="margin-top:20px;">

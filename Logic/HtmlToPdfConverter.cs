@@ -43,7 +43,7 @@ namespace CvGenerator.Logic
             process.WaitForExit();
         }
 
-        public async Task<byte[]> ConvertToPdf(string resPath, string html, PaperFormat paperFormat, int margin = 32, decimal scale = 1, bool showFooter = true)
+        public async Task<byte[]> ConvertToPdf(string resPath, string html, PaperFormat paperFormat, int margin = 32, decimal scale = 1)
         {
             using (var page = await browser.NewPageAsync())
             {
@@ -64,8 +64,6 @@ namespace CvGenerator.Logic
                     },
                     Scale = scale,
                     PrintBackground = true,
-                    DisplayHeaderFooter = showFooter,
-                    FooterTemplate = "  This file has been generated using CvGenerator.Net project. Visit github.com/aliaa/CvGenerator.Net  ",
                 };
 
                 return await page.PdfDataAsync(pdfOptions);

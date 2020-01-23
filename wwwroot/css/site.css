@@ -90,3 +90,8 @@ body {
     padding: 8px;
     display: block;
 }
+
+.portrait-preview {
+    height: 180px;
+    border-radius: 50%;
+}
