@@ -5,6 +5,8 @@ namespace CvGenerator.Logic
 {
     public class Template
     {
+        public const string HTML_FILE_NAME = "index.html";
+
         public string Name { get; private set; }
         public string DirectoryPath { get; private set; }
         private CachedData<HtmlRenderer> RendererCache;
@@ -16,7 +18,7 @@ namespace CvGenerator.Logic
             DirectoryPath = directoryPath;
             Name = Path.GetFileName(directoryPath);
             RendererCache = new CachedData<HtmlRenderer>(
-                        RefreshFunc: (x) => new HtmlRenderer(File.ReadAllText(Path.Combine(directoryPath, "index.html"))),
+                        RefreshFunc: (x) => new HtmlRenderer(File.ReadAllText(Path.Combine(directoryPath, HTML_FILE_NAME))),
                         ExpireSeconds: 1);
         }
     }
