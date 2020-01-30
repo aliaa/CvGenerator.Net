@@ -193,7 +193,10 @@
 
         <h4 class="m-4 mt-5">That's it!</h4>
         <div class="text-center">
-            <input type="button" id="btnShowPreview" value="Show Preview" class="btn btn-primary m-1" />
+            <button type="button" id="btnShowPreview" class="btn btn-primary m-1">
+                <span id="btnShowPreviewSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <span id="btnShowPreviewText">Show Preview</span>
+            </button>
         </div>
 
         <div id="divPreview" class="d-none">
@@ -316,6 +319,10 @@
         });
 
         $("#btnShowPreview").on("click", function () {
+            $(this).addClass("disabled");
+            $(this).attr("disabled", "disabled");
+            $("#btnShowPreviewSpinner").removeClass("d-none");
+            $("#btnShowPreviewText").text("Loading...");
             $.ajax({
                 type: "POST",
                 url: "/Home/Preview",
@@ -326,6 +333,12 @@
                     RenderPdfIntoCanvas(dataBytes, canvas);
                     $("#divPreview").removeClass("d-none");
                     $("#divDownload").removeClass("d-none");
+                },
+                complete: function () {
+                    $("#btnShowPreview").removeClass("disabled");
+                    $("#btnShowPreview").removeAttr("disabled");
+                    $("#btnShowPreviewSpinner").addClass("d-none");
+                    $("#btnShowPreviewText").text("Show Preview");
                 }
             });
         });
