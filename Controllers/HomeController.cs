@@ -10,6 +10,7 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using PuppeteerSharp.Media;
+using System.Text;
 
 namespace CvGenerator.Controllers
 {
@@ -48,6 +49,13 @@ namespace CvGenerator.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> GetHtml(CvInformation cv)
+        {
+            var html = await CreateHtml(cv);
+            return File(Encoding.UTF8.GetBytes(html), "text/html", "cv.html");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Index(CvInformation cv)
         {
             if (!ModelState.IsValid)
@@ -60,7 +68,7 @@ namespace CvGenerator.Controllers
             return File(pdfContent, "application/pdf", "cv.pdf");
         }
 
-        private async Task<byte[]> CreatePdf(CvInformation cv)
+        private async Task<string> CreateHtml(CvInformation cv)
         {
             CleanupEmptyListItems(cv);
             if (!string.IsNullOrWhiteSpace(cv.QrCodeLink))
@@ -68,7 +76,12 @@ namespace CvGenerator.Controllers
                 cv.QrCodeImage = qrGenerator.GetPngBase64Encoded(cv.QrCodeLink);
             }
             var selectedTemplate = templates[cv.TemplateName];
-            var html = selectedTemplate.Renderer.FillData(cv);
+            return await Task.Run(() => selectedTemplate.Renderer.FillData(cv));
+        }
+
+        private async Task<byte[]> CreatePdf(CvInformation cv)
+        {
+            var html = await CreateHtml(cv);
             var paperFormat = cv.PaperSize == "A4" ? PaperFormat.A4 : PaperFormat.Letter;
             return await converter.ConvertToPdf(null, html, paperFormat , cv.Margin, cv.Scale / 100m);
         }

@@ -221,7 +221,8 @@
                         <label class="custom-control-label" for="chkAgreeSave">I consent this site to save my personal information in order to let employers find me.</label>
                     </div>
                     <div class="text-center">
-                        <input type="submit" id="btnDownload" class="btn btn-primary disabled" disabled value="Download Now" />
+                        <input type="submit" id="btnDownloadPdf" class="btn btn-primary disabled" disabled value="Download PDF" />
+                        <input type="submit" id="btnDownloadHtml" asp-action="GetHtml" class="btn btn-outline-primary disabled" disabled value="Download HTML" />
                     </div>
                 </div>
             </div>
@@ -344,14 +345,19 @@
         });
 
         $("#chkAgreePrivacy").on("click", function () {
-            var btn = $("#btnDownload");
+            var btnPdf = $("#btnDownloadPdf");
+            var btnHtml = $("#btnDownloadHtml");
             if (this.checked) {
-                btn.removeClass("disabled");
-                btn.removeAttr("disabled");
+                btnPdf.removeClass("disabled");
+                btnPdf.removeAttr("disabled");
+                btnHtml.removeClass("disabled");
+                btnHtml.removeAttr("disabled");
             }
             else {
-                btn.addClass("disabled");
-                btn.attr("disabled", "disabled");
+                btnPdf.addClass("disabled");
+                btnPdf.attr("disabled", "disabled");
+                btnHtml.addClass("disabled");
+                btnHtml.attr("disabled", "disabled");
             }
         });
 
