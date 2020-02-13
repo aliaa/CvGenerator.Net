@@ -61,7 +61,7 @@ namespace CvGenerator
             services.AddSingleton(new QrGenerator());
 
             var templatesPath = Path.Combine((env.ImplementationInstance as IWebHostEnvironment).ContentRootPath, "CvTemplates");
-            var templates = InitializeTemplates(templatesPath);
+            var templates = InitializeTemplates(templatesPath, Configuration.GetValue<int>("TemplatesRefreshRate"));
             services.AddSingleton(templates);
         }
 
@@ -89,14 +89,14 @@ namespace CvGenerator
             });
         }
 
-        private Dictionary<string, Template> InitializeTemplates(string templatesPath)
+        private Dictionary<string, Template> InitializeTemplates(string templatesPath, int refreshCacheSeconds)
         {
             var templates = new Dictionary<string, Template>();
             foreach (var folder in Directory.GetDirectories(templatesPath))
             {
                 if (File.Exists(Path.Combine(folder, Template.HTML_FILE_NAME)))
                 {
-                    var template = new Template(folder);
+                    var template = new Template(folder, refreshCacheSeconds);
                     templates.Add(template.Name, template);
                 }
             }

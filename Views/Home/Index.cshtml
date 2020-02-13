@@ -60,11 +60,11 @@
                 </div>
                 <div class="col-md form-group">
                     Linkedin Address:
-                    <input asp-for="LinkedinLink" class="form-control" value="linkedin.com/in/your-name" />
+                    <input asp-for="LinkedinLink" class="form-control" placeholder="linkedin.com/in/your-name" />
                 </div>
                 <div class="col-md form-group">
                     Github Address:
-                    <input asp-for="GithubLink" class="form-control" value="github.com/your-name" />
+                    <input asp-for="GithubLink" class="form-control" placeholder="github.com/your-name" />
                 </div>
             </div>
             <div class="row">
@@ -72,6 +72,16 @@
                     Protfolio/Personal Website:
                     <input asp-for="PersonalLink" class="form-control" />
                 </div>
+                <div class="col-md-3 form-group">
+                    Skype Number/ID:
+                    <input asp-for="SkypeId" class="form-control" />
+                </div>
+                <div class="col-md-3 form-group">
+                    HackerRank Address:
+                    <input asp-for="HackerRankLink" class="form-control" placeholder="hackerrank.com/your-username" />
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-3 form-group">
                     QR Code Title:
                     <input asp-for="QrCodeTitle" class="form-control" />
@@ -83,8 +93,14 @@
             </div>
             <div class="row">
                 <div class="col form-group">
-                    Skills: <small class="text-secondary ml-4">(Separate by a comma " , ")</small>
-                    <input asp-for="SkillsInAString" class="form-control" data-role="tagsinput" />
+                    Objective:
+                    <textarea asp-for="Objective" class="form-control" rows="3" placeholder="Explain in 3 lines what you have done, what you do well and what you want to work on."></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group">
+                    Skills: <small class="text-secondary ml-4">(Separate them by a comma' , ')</small>
+                    <input asp-for="SkillsInAString" class="form-control" data-role="tagsinput"/>
                 </div>
             </div>
         </div>

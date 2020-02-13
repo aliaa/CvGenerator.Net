@@ -23,13 +23,17 @@ namespace CvGenerator.Models
         public string LinkedinLink { get; set; }
         public string GithubLink { get; set; }
         public string PersonalLink { get; set; }
+        public string SkypeId { get; set; }
+        public string HackerRankLink { get; set; }
 
         public string QrCodeTitle { get; set; }
         public string QrCodeLink { get; set; }
+
         [BsonIgnore]
         public string QrCodeImage { get; set; }
 
         public string SkillsInAString { get; set; }
+        public string Objective { get; set; }
 
         public int Margin { get; set; } = 32;
         public int Scale { get; set; } = 100;

@@ -49,8 +49,8 @@ namespace CvGenerator.Logic
             // Remove unused remaining placeholders:
             result = Regex.Replace(result, @"\{\w+\}", "");
 
-            XElement rootElem = XElement.Parse(result);
-            var elemsByDataBind = rootElem.Descendants()
+            XElement bodyElem = XElement.Parse(result).Element("body");
+            var elemsByDataBind = bodyElem.Descendants()
                 .Where(e => e.Attribute("data-bind") != null)
                 .GroupBy(e => e.Attribute("data-bind").Value)
                 .ToDictionary(k => k.Key);
@@ -118,7 +118,7 @@ namespace CvGenerator.Logic
                 }
             }
 
-            result = rootElem.ToString();
+            result = Regex.Replace(result, @"<body>.*<\/body>", bodyElem.ToString(), RegexOptions.Singleline);
             return result;
         }
 
