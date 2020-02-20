@@ -28,7 +28,7 @@ namespace CvGenerator.Models
             StringBuilder sb = new StringBuilder();
             sb.Append(StartYear).Append(" - ");
             if (StillStudying)
-                sb.Append("Now");
+                sb.Append("Present");
             else
                 sb.Append(EndYear);
             sb.Append("<br/>").Append(HttpUtility.HtmlEncode(Title)).Append("<br/>").Append(University);

@@ -97,15 +97,22 @@
                     <textarea asp-for="Objective" class="form-control" rows="3" placeholder="Explain in 3 lines what you have done, what you do well and what you want to work on."></textarea>
                 </div>
             </div>
-            <div class="row">
-                <div class="col form-group">
-                    Skills: <small class="text-secondary ml-4">(Separate them by a comma' , ')</small>
-                    <input asp-for="SkillsInAString" class="form-control" data-role="tagsinput"/>
-                </div>
+        </div>
+
+        <h4 class="m-4 mt-5">3. Your Skills</h4>
+        <div class="m-4">
+            <div class="text-center mb-4">
+                <input class="btn btn-secondary" type="button" id="btnAddSkillSet" value="Add Skill Set" />
+            </div>
+            <div class="row" id="divSkills">
+                @for (int i = 0; i < Model.SkillSets.Count; i++)
+                {
+                    @Html.EditorFor(m => Model.SkillSets[i])
+                }
             </div>
         </div>
 
-        <h4 class="m-4 mt-5">3. Your Education History</h4>
+        <h4 class="m-4 mt-5">4. Your Education History</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddEducation" value="Add Education" />
@@ -118,7 +125,7 @@
             </div>
         </div>
 
-        <h4 class="m-4 mt-5">4. Your Employment History</h4>
+        <h4 class="m-4 mt-5">5. Your Employment History</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddEmployment" value="Add Employment" />
@@ -131,7 +138,7 @@
             </div>
         </div>
 
-        <h4 class="m-4  mt-5">5. Your Language Skills</h4>
+        <h4 class="m-4  mt-5">6. Your Language Skills</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddLanguage" value="Add Language" />
@@ -144,7 +151,7 @@
             </div>
         </div>
 
-        <h4 class="m-4  mt-5">6. Your Projects</h4>
+        <h4 class="m-4  mt-5">7. Your Projects</h4>
         <div class="m-4">
             <div class="text-center mb-4">
                 <input class="btn btn-secondary" type="button" id="btnAddProject" value="Add Project" />
@@ -157,7 +164,7 @@
             </div>
         </div>
 
-        <h4 class="m-4 mt-5">7. Optional Settings</h4>
+        <h4 class="m-4 mt-5">8. Optional Settings</h4>
         <div class="m-4">
             <div class="row">
                 <div class="col-4 text-center">
@@ -188,7 +195,7 @@
         </div>
 
 
-        <h4 class="m-4 mt-5">8. Choose One of Templates:</h4>
+        <h4 class="m-4 mt-5">9. Choose One of Templates:</h4>
         <div class="m-4">
             <div class="d-flex align-items-center">
                 <div class="col-3 form-group">
@@ -215,30 +222,32 @@
             </button>
         </div>
 
-        <div id="divPreview" class="d-none">
-            <h4 class="m-4 mt-5">Preview:</h4>
-            <div class="row justify-content-center">
-                <div class="p-3 d-inline-block" style="background-color:#f6f6f6;">
-                    <canvas id="pdfPreview"></canvas>
+        <div style="min-height:400px;">
+            <div id="divPreview" class="d-none">
+                <h4 class="m-4 mt-5">Preview:</h4>
+                <div class="row justify-content-center">
+                    <div class="p-3 d-inline-block" style="background-color:#f6f6f6;">
+                        <canvas id="pdfPreview"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="divDownload" class="d-none">
-            <h4 class="m-4 mt-5">Download Your CV!</h4>
-            <div class="row m-4">
-                <div class="col">
-                    <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" class="custom-control-input" id="chkAgreePrivacy" asp-for="AgreePrivacy">
-                        <label class="custom-control-label" for="chkAgreePrivacy">I have read the <a asp-action="Privacy">Privacy page</a> and agree with all terms and conditions.</label>
-                    </div>
-                    <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" class="custom-control-input" id="chkAgreeSave" asp-for="AgreeSave">
-                        <label class="custom-control-label" for="chkAgreeSave">I consent this site to save my personal information in order to let employers find me.</label>
-                    </div>
-                    <div class="text-center">
-                        <input type="submit" id="btnDownloadPdf" class="btn btn-primary disabled" disabled value="Download PDF" />
-                        <input type="submit" id="btnDownloadHtml" asp-action="GetHtml" class="btn btn-outline-primary disabled" disabled value="Download HTML" />
+            <div id="divDownload" class="d-none">
+                <h4 class="m-4 mt-5">Download Your CV!</h4>
+                <div class="row m-4">
+                    <div class="col">
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input type="checkbox" class="custom-control-input" id="chkAgreePrivacy" asp-for="AgreePrivacy">
+                            <label class="custom-control-label" for="chkAgreePrivacy">I have read the <a asp-action="Privacy">Privacy page</a> and agree with all terms and conditions.</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input type="checkbox" class="custom-control-input" id="chkAgreeSave" asp-for="AgreeSave">
+                            <label class="custom-control-label" for="chkAgreeSave">I consent this site to save my personal information in order to let employers find me.</label>
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" id="btnDownloadPdf" class="btn btn-primary disabled" disabled value="Download PDF" />
+                            <input type="submit" id="btnDownloadHtml" asp-action="GetHtml" class="btn btn-outline-primary disabled" disabled value="Download HTML" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -254,6 +263,9 @@
     <script src="~/lib/jquery-colorpickersliders/jquery.colorpickersliders.js"></script>
     <link rel="stylesheet" href="~/lib/jquery-colorpickersliders/jquery.colorpickersliders.css" />
     <script src="~/lib/tinycolor.js"></script>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-tagsinput/bootstrap-tagsinput.css" />
 
     <script type="text/javascript">
 
@@ -286,6 +298,23 @@
             $("#hidPortraitImage").attr("value", null);
             $("#inputPicture").val("");
         }
+
+        function InitializeTagsInput() {
+            $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
+        }
+
+        $("#btnAddSkillSet").on("click", function () {
+            $.ajax({
+                url: "/Home/AddSkillSet",
+                success: function (partialView) {
+                    var i = $("#divSkills").children().length;
+                    var item = $.parseHTML(partialView);
+                    item = ConvertInputsToBeAsArrayItem(item, "@nameof(Model.SkillSets)", i);
+                    $('#divSkills').append(item);
+                    InitializeTagsInput();
+                }
+            });
+        });
 
         $("#btnAddEducation").on("click", function () {
             $.ajax({
@@ -331,6 +360,7 @@
                     var item = $.parseHTML(partialView);
                     item = ConvertInputsToBeAsArrayItem(item, "@nameof(Model.Projects)", i);
                     $('#divProjects').append(item);
+                    InitializeTagsInput();
                 }
             });
         });

@@ -9,9 +9,7 @@
     <meta name="keywords" content="CV,Resume,Create CV,Github,Asp.Net Core" />
     <meta name="description" content="This is an open source Asp.Net Core project to generate CV" />
     <title>@ViewData["Title"] - CV-Generator.Net</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap-tagsinput/bootstrap-tagsinput.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -39,7 +37,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="mb-5">
             @RenderBody()
         </main>
     </div>

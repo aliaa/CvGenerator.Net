@@ -118,6 +118,8 @@ namespace CvGenerator.Controllers
 
         private IActionResult GetEditorTemplatePartialView(string name) => PartialView("EditorTemplates/" + name);
 
+        public IActionResult AddSkillSet() => GetEditorTemplatePartialView(nameof(CvSkillSet));
+
         public IActionResult AddEducation() => GetEditorTemplatePartialView(nameof(CvEducation));
 
         public IActionResult AddEmployment() => GetEditorTemplatePartialView(nameof(CvEmployment));

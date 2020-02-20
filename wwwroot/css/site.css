@@ -95,3 +95,7 @@ body {
     height: 180px;
     border-radius: 50%;
 }
+
+div.bootstrap-tagsinput {
+    display: block;
+}

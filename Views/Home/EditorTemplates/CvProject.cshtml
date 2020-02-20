@@ -30,8 +30,10 @@
         </div>
         <div class="form-group">
             <label asp-for="TechStack" class="control-label"></label>
-            <small class="text-secondary ml-4">(Separate by a comma " , ")</small>
-            <input asp-for="TechStack" class="form-control" />
+            <small class="text-secondary ml-4">(Separate by a comma ",")</small>
+            <div>
+                <input asp-for="TechStack" class="form-control" data-role="tagsinput" />
+            </div>
             <span asp-validation-for="TechStack" class="text-danger"></span>
         </div>
     </div>

@@ -12,7 +12,7 @@
 		.sidebar a {
 			color: white;
 		}
-		.sidebar>div {
+		.sidebarItem {
 			background-color: {ThemeColor};
 			padding: 16px;
 			margin-top: 8px;
@@ -103,7 +103,7 @@
 		</div>
 
 		<div class="sidebar">
-			<div>
+			<div class="sidebarItem">
 				<div data-bind="Address" class="iconText">
 					<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAADJklEQVRoge2az4tVZRyHn9d+TOKULRKVhBQUzIRmFbZo0aJNKP4BBe38A3ThTkFC3LjIQUaahW7bBJEtJAgKKxVFAynDUJSRYVBU0oHx59PinOQ6TPd+3/eee49IDwxc7vmc9/0+9z0/3vOegeeE1GRj6qvAZuBDYAxYDbxeb74NXAZ+A34Avksp3Wmy/75RV6oT6qxxZtVJdW3b9aOOqHvUuxkC87mv7lNH2pJ4Q/2xD4H5/KKuGLbERvVqgxL/ckXdOCyJ5QOS6JRZPmiJV6wOgUHzs4M8Z6xO7GGxN6e28H1EXQlcBJbk/gCF3AfeTildioQXZTS8i+FJALwM7IyGQyOijgLTwGhhUaXMAitSSnd7BaMjsoU8iXvAAWBTvd9o/Xm83hZlCfBxRr476pcZJ+mU+m6XtsbqTJRDTYqcCnY6101insxcsM0TTYpcD3b6RUab48E2Z5oUuRfs9L2MNjcF25yLtBc92Q3mfg/mAM4Hc48joajI7WAuh0b7jjZ2K5jbEMzlZG9GQlGRi8Hcp8EcwCfB3J+RUFQkejxvU8d6herMtib7joqcC+ZGgKPdZOptR6nmUhHOBHO9UZepj4KXS+vL9Xh9iR2t/96vv4teylUfqK9FasyZxp+lWuIZJsdTSh9EgjnT+G8Li+mHb6LBnBFZD/xRVE4ZAmtSSlci4fCIpJQuAGdLqyrgp6gE5B1aAJOZ+X6YyAlnrf1aPSlOAUtz9itgGngrpfQgukPWiNSPnIdzqyrgYI4EFKzGq6uAv6hufoPgb6rRyJqo5p4jpJSmgCO5+2UwnisBhe9H1DepJnNNLw/dBNallEIz3k6yRwQgpXQN2F+ybw92l0j0hbrYZhezL6gvDVWiQ+azBkU2tyJRiyxSTzcg8X1rEh0yY1avz0qZVde17QGAurcPke1t1/8Eq5ei5wskTqovtF3/U1g9DT7MkJhT32m77gVRP88Q2dF2vf+J+qJ6PCBxTC26GQ8NdZV6o4vEjNVrvGcfdav6eAGJh+pHbdeXhbp7AZHwO8FnBjWpX3VIfK02+t9IQ8NqYe6E+qvVY/L/9OIfE3CKlaPsSH4AAAAASUVORK5CYII=" />
 					<span>{Address}</span>
@@ -137,19 +137,18 @@
 					<span><a href="https://{HackerRankLink}">{HackerRankLink}</a></span>
 				  </div>
 			</div>
-			<div data-bind="SkillsInAString">
-				<h3 style="margin:0px;">Skills</h3>
-				<ul data-bind="Skills" style="columns:2;">
-					<li data-bind="Item">{*}</li>
-				</ul>
+			<div data-bind="SkillSets">
+				<div data-bind="Item" class="skills sidebarItem">
+					{*}
+				</div>
 			</div>
-			<div data-bind="Languages">
+			<div data-bind="Languages" class="sidebarItem">
 				<h3 style="margin:0px;">Languages</h3>
 				<ul data-bind="Languages">
 					<li data-bind="Item">{*}</li>
 				</ul>
 			</div>
-			<div data-bind="QrCodeImage">
+			<div data-bind="QrCodeImage" class="sidebarItem">
 				<h3 style="margin:0px;" data-bind="QrCodeTitle">{QrCodeTitle}</h3>
 				<div style="margin-top:24px; text-align:center;">
 					<img style="width:200px;" src="{QrCodeImage}"/>
