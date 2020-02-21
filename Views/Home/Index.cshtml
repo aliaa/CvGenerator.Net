@@ -47,6 +47,7 @@
                 <div class="col-md form-group">
                     Email:
                     <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="row">
@@ -366,28 +367,35 @@
         });
 
         $("#btnShowPreview").on("click", function () {
-            $(this).addClass("disabled");
-            $(this).attr("disabled", "disabled");
-            $("#btnShowPreviewSpinner").removeClass("d-none");
-            $("#btnShowPreviewText").text("Loading...");
-            $.ajax({
-                type: "POST",
-                url: "/Home/Preview",
-                data: $('form').serialize(),
-                success: function (data) {
-                    var dataBytes = atob(data);
-                    var canvas = document.getElementById("pdfPreview");
-                    RenderPdfIntoCanvas(dataBytes, canvas);
-                    $("#divPreview").removeClass("d-none");
-                    $("#divDownload").removeClass("d-none");
-                },
-                complete: function () {
-                    $("#btnShowPreview").removeClass("disabled");
-                    $("#btnShowPreview").removeAttr("disabled");
-                    $("#btnShowPreviewSpinner").addClass("d-none");
-                    $("#btnShowPreviewText").text("Show Preview");
-                }
-            });
+            if ($("#form").valid()) {
+                $(this).addClass("disabled");
+                $(this).attr("disabled", "disabled");
+                $("#btnShowPreviewSpinner").removeClass("d-none");
+                $("#btnShowPreviewText").text("Loading...");
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/Preview",
+                    data: $('form').serialize(),
+                    success: function (data) {
+                        var dataBytes = atob(data);
+                        var canvas = document.getElementById("pdfPreview");
+                        RenderPdfIntoCanvas(dataBytes, canvas);
+                        $("#divPreview").removeClass("d-none");
+                        $("#divDownload").removeClass("d-none");
+                    },
+                    complete: function () {
+                        $("#btnShowPreview").removeClass("disabled");
+                        $("#btnShowPreview").removeAttr("disabled");
+                        $("#btnShowPreviewSpinner").addClass("d-none");
+                        $("#btnShowPreviewText").text("Show Preview");
+                    }
+                });
+            }
+            else {
+                $("#divPreview").addClass("d-none");
+                $("#divDownload").addClass("d-none");
+                alert("Please fill required fields!");
+            }
         });
 
         $("#chkAgreePrivacy").on("click", function () {

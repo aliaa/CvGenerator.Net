@@ -17,9 +17,11 @@ namespace CvGenerator.Models
         public string LastName { get; set; }
         [Required(ErrorMessage = "Your job title is required!")]
         public string JobTitle { get; set; }
+        [Required]
         public string Email { get; set; }
         public string Address { get; set; }
         public string ContactNumber { get; set; }
+        [Required]
         public string LinkedinLink { get; set; }
         public string GithubLink { get; set; }
         public string PersonalLink { get; set; }
