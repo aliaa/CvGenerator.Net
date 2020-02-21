@@ -394,7 +394,7 @@
             else {
                 $("#divPreview").addClass("d-none");
                 $("#divDownload").addClass("d-none");
-                alert("Please fill required fields!");
+                $("#form").validate().focusInvalid();
             }
         });
 
