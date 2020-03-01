@@ -13,12 +13,18 @@ function ToggleNearInput(thisObj, name) {
     thisObj.parent().parent().siblings().children("input[name$='" + name + "']").prop('disabled', function (i, v) { return !v; });
 }
 
-function RenderPdfIntoCanvas(dataBytes, canvas) {
+function RenderPdfIntoCanvas(dataBytes, canvas, moreThanOnePageWarning) {
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
     pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
     var loadingTask = pdfjsLib.getDocument({ data: dataBytes });
     loadingTask.promise.then(
         function (pdf) {
+
+            if (pdf.numPages > 1)
+                $(moreThanOnePageWarning).removeClass("d-none");
+            else
+                $(moreThanOnePageWarning).addClass("d-none");
+
             // Load information from the first page.
             pdf.getPage(1).then(function (page) {
                 var scale = 1.5;
