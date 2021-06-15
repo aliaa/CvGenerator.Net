@@ -19,6 +19,7 @@ namespace CvGenerator.Models
         public string JobTitle { get; set; }
         [Required]
         public string Email { get; set; }
+        public string BirthDate { get; set; }
         public string Address { get; set; }
         public string ContactNumber { get; set; }
         [Required]
